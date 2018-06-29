@@ -1,0 +1,25 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/preference_category_preferences">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="key_beep_on_code"
+            android:summary="@string/preference_summary_beep_on_code"
+            android:title="@string/preference_title_beep_on_code" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preference_category_user">
+        <Preference
+            android:key="key_sign_out"
+            android:title="@string/preference_title_sign_out" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preference_category_extra">
+        <Preference
+            android:key="key_info"
+            android:summary="@string/preference_summary_info"
+            android:title="@string/preference_title_info" />
+        <Preference
+            android:key="key_feedback"
+            android:summary="@string/preference_summary_feedback"
+            android:title="@string/preference_title_feedback" />
+    </PreferenceCategory>
+</PreferenceScreen>

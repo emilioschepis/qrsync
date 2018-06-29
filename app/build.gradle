@@ -2,31 +2,49 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-kapt'
+
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion versions.androidCompileSdkVersion
     defaultConfig {
         applicationId "com.emilioschepis.qrsync"
-        minSdkVersion 23
-        targetSdkVersion 27
+        minSdkVersion versions.androidMinSdkVersion
+        targetSdkVersion versions.androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    testImplementation 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation libraries.kotlin
+
+    implementation libraries.lifecycle
+    implementation libraries.support
+    implementation libraries.playServices
+    implementation libraries.firebase
+    implementation libraries.gson
+    implementation libraries.cameraView
+    implementation libraries.koin
+    implementation libraries.arrow
+    implementation libraries.progressBar
+    kapt annotationProcessors.arrowAp
+
+    testImplementation testLibraries.jUnit
+
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

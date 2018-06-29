@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scan_root_cdl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.emilioschepis.qrsync.ui.scan.ScanActivity">
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/scan_cmv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_large"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        app:layout_anchor="@id/scan_cmv"
+        app:layout_anchorGravity="bottom">
+
+        <ToggleButton
+            android:id="@+id/scan_flash_tgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_flash_on_black_24dp"
+            android:drawableTint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:textOff="@string/text_flash_off"
+            android:textOn="@string/text_flash_on" />
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/code_list_root_cdl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.emilioschepis.qrsync.ui.codelist.CodeListActivity">
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/code_list_loading_prb"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/progress_bar_height"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:mpb_progressStyle="horizontal"
+        app:mpb_useIntrinsicPadding="false"
+        tools:visibility="visible" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/code_list_main_rev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/code_list_loading_prb"
+        app:layout_anchorGravity="bottom"
+        tools:listitem="@layout/item_code" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/code_list_scan_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_normal"
+        android:src="@drawable/ic_add_white_24dp"
+        app:fabSize="normal"
+        app:layout_behavior="com.emilioschepis.qrsync.ui.codelist.CodeListScrollBehavior" />
+
+</android.support.design.widget.CoordinatorLayout>

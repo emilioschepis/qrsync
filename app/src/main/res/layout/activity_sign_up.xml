@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_up_root_cdl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.emilioschepis.qrsync.ui.signin.SignInActivity">
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/sign_up_loading_prb"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/progress_bar_height"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:mpb_progressStyle="horizontal"
+        app:mpb_useIntrinsicPadding="false"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/sign_up_logo_imv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/logo_height"
+        android:layout_marginTop="@dimen/logo_margin_top"
+        android:contentDescription="@string/accessibility_app_logo"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_qr_sync_logo_trim" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sign_up_email_til"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:theme="@style/AppTheme.Appearance.AuthenticationTil"
+        app:errorTextAppearance="@style/TilErrorAppearance"
+        app:layout_anchor="@id/sign_up_logo_imv"
+        app:layout_anchorGravity="bottom">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/sign_up_email_iet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_authentication_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@android:color/white" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sign_up_password_til"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:theme="@style/AppTheme.Appearance.AuthenticationTil"
+        app:errorTextAppearance="@style/TilErrorAppearance"
+        app:layout_anchor="@id/sign_up_email_til"
+        app:layout_anchorGravity="bottom">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/sign_up_password_iet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_authentication_password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@android:color/white" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/sign_up_submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:backgroundTint="@android:color/white"
+        android:text="@string/text_registration_submit"
+        android:textColor="@color/colorPrimary"
+        app:layout_anchor="@id/sign_up_password_til"
+        app:layout_anchorGravity="bottom" />
+
+</android.support.design.widget.CoordinatorLayout>

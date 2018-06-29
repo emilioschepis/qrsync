@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_normal">8dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_xlarge">24dp</dimen>
+    <dimen name="logo_height">96dp</dimen>
+    <dimen name="logo_margin_top">64dp</dimen>
+    <dimen name="progress_bar_height">4dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+</resources>
