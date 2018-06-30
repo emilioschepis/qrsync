@@ -11,6 +11,10 @@
         <Preference
             android:key="key_sign_out"
             android:title="@string/preference_title_sign_out" />
+        <Preference
+            android:key="key_delete_all_codes"
+            android:summary="@string/preference_summary_delete_all_codes"
+            android:title="@string/preference_title_delete_all_codes" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_category_extra">
         <Preference

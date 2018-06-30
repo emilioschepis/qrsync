@@ -29,6 +29,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     activity?.finishAffinity()
                 }
             }
+            "key_delete_all_codes" -> {
+                showConfirmationDialog(getString(R.string.question_delete_all_codes)) {
+                    viewModel.deleteAllCodes().observe(this, Observer {
+                        it?.fold(this::onCodesDeletionSuccess, this::onCodesDeletionError)
+                    })
+                }
+            }
             "key_info" -> {
                 viewModel.retrieveInfo().observe(this, Observer {
                     it?.fold(this::onInfoRetrievalError, this::onInfoRetrievalSuccess)
@@ -54,6 +61,14 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         } catch (ex: ActivityNotFoundException) {
             showMessage(getString(R.string.error_activity_not_found), Toast.LENGTH_SHORT)
         }
+    }
+
+    private fun onCodesDeletionError(error: QSError) {
+        showMessage(getString(error.resId, error.params.getOrNull(0)))
+    }
+
+    private fun onCodesDeletionSuccess() {
+        activity?.finish()
     }
 
     private fun onInfoRetrievalError(error: QSError) {

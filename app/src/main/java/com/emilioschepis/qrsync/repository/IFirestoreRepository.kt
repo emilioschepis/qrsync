@@ -1,5 +1,6 @@
 package com.emilioschepis.qrsync.repository
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import arrow.core.Either
 import arrow.core.Option
@@ -24,4 +25,7 @@ interface IFirestoreRepository {
 
     fun updateCodeField(id: String, updatedValues: Pair<String, Any>):
             MutableLiveData<Option<QSError>>
+
+    fun deleteAllCodes():
+            LiveData<Option<QSError>>
 }

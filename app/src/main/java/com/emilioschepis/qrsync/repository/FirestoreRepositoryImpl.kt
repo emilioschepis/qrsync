@@ -1,6 +1,8 @@
 package com.emilioschepis.qrsync.repository
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import arrow.core.*
 import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSError
@@ -153,5 +155,31 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
                 }
 
         return observable
+    }
+
+    override fun deleteAllCodes(): LiveData<Option<QSError>> {
+        return Transformations.switchMap(retrieveCollection()) {
+            it.fold({
+                MutableLiveData<Option<QSError>>().apply { postValue(it.some()) }
+            }, {
+                val batch = firestore.batch()
+                val observable = MutableLiveData<Option<QSError>>()
+
+                it.forEach {
+                    batch.delete(codesReference.document(it.id))
+                }
+
+                batch.commit()
+                        .addOnSuccessListener {
+                            observable.postValue(None)
+                        }
+                        .addOnFailureListener {
+                            val error = QSError.fromException(it)
+                            observable.postValue(error.some())
+                        }
+
+                return@fold observable
+            })
+        }
     }
 }

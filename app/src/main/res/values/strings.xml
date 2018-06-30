@@ -76,4 +76,7 @@
     <string name="error_network_unavailable">You\'re not connected to the internet</string>
     <string name="text_flash_on">Flash ON</string>
     <string name="text_flash_off">Flash OFF</string>
+    <string name="preference_title_delete_all_codes">Delete everything</string>
+    <string name="preference_summary_delete_all_codes">Delete all of your saved codes</string>
+    <string name="question_delete_all_codes">Do you want to delete all of your saved codes? This action can not be undone</string>
 </resources>
