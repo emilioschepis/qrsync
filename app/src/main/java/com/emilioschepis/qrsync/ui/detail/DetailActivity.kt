@@ -34,7 +34,6 @@ class DetailActivity : AppCompatActivity() {
     private val contentTev by lazy { findViewById<TextView>(R.id.detail_content_tev) }
     private val progressBar by lazy { findViewById<ProgressBar>(R.id.detail_loading_prb) }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)

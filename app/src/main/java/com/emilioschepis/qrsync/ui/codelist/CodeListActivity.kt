@@ -32,7 +32,6 @@ class CodeListActivity : AppCompatActivity() {
     private val scanFab by lazy { findViewById<FloatingActionButton>(R.id.code_list_scan_fab) }
     private val progressBar by lazy { findViewById<ProgressBar>(R.id.code_list_loading_prb) }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_code_list)
