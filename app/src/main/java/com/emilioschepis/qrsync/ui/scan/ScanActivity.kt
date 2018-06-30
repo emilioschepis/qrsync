@@ -40,9 +40,11 @@ class ScanActivity : AppCompatActivity() {
             }
         }
 
-        flashToggle.setOnCheckedChangeListener { _, isChecked ->
+        flashToggle.setOnCheckedChangeListener { view, isChecked ->
             camera.flash = if (isChecked) Flash.TORCH else Flash.OFF
 
+            val drawableRes = if (isChecked) R.drawable.ic_flash_on_white_24dp else R.drawable.ic_flash_off_white_24dp
+            view.setCompoundDrawablesWithIntrinsicBounds(getDrawable(drawableRes), null, null, null)
         }
     }
 

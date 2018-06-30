@@ -26,8 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:drawableStart="@drawable/ic_flash_on_black_24dp"
-            android:drawableTint="@android:color/white"
+            android:drawableStart="@drawable/ic_flash_off_white_24dp"
             android:textColor="@android:color/white"
             android:textOff="@string/text_flash_off"
             android:textOn="@string/text_flash_on" />
