@@ -25,7 +25,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
         }
 
     override fun retrieveInfo():
-            MutableLiveData<Either<QSError, String>> {
+            LiveData<Either<QSError, String>> {
         val documentReference = firestore
                 .collection("public")
                 .document("app_info_panel")
@@ -55,7 +55,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
     }
 
     override fun retrieveCollection():
-            MutableLiveData<Either<QSError, List<QSCode>>> {
+            LiveData<Either<QSError, List<QSCode>>> {
         val observable = MutableLiveData<Either<QSError, List<QSCode>>>()
 
         codesReference.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener { snapshot, exception ->
@@ -76,7 +76,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
     }
 
     override fun retrieveCode(id: String):
-            MutableLiveData<Either<QSError, QSCode>> {
+            LiveData<Either<QSError, QSCode>> {
         val codeReference = codesReference.document(id)
         val observable = MutableLiveData<Either<QSError, QSCode>>()
 
@@ -100,7 +100,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
     }
 
     override fun uploadCodes(codes: List<QSCode>):
-            MutableLiveData<Option<QSError>> {
+            LiveData<Option<QSError>> {
 
         val batch = firestore.batch()
         val observable = MutableLiveData<Option<QSError>>()
@@ -124,7 +124,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
     }
 
     override fun updateCodeField(id: String, updatedValues: Pair<String, Any>):
-            MutableLiveData<Option<QSError>> {
+            LiveData<Option<QSError>> {
         val codeReference = codesReference.document(id)
         val observable = MutableLiveData<Option<QSError>>()
 
@@ -141,7 +141,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
     }
 
     override fun deleteCode(id: String):
-            MutableLiveData<Option<QSError>> {
+            LiveData<Option<QSError>> {
         val codeReference = codesReference.document(id)
         val observable = MutableLiveData<Option<QSError>>()
 
@@ -157,7 +157,8 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
         return observable
     }
 
-    override fun deleteAllCodes(): LiveData<Option<QSError>> {
+    override fun deleteAllCodes():
+            LiveData<Option<QSError>> {
         return Transformations.switchMap(retrieveCollection()) {
             it.fold({
                 MutableLiveData<Option<QSError>>().apply { postValue(it.some()) }

@@ -1,5 +1,6 @@
 package com.emilioschepis.qrsync.repository
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import arrow.core.Either
 import arrow.core.Option
@@ -31,7 +32,7 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : IAuthRepository {
     }
 
     override fun signInWithGoogle(credentials: GoogleSignInAccount):
-            MutableLiveData<Either<QSError, QSUser>> {
+            LiveData<Either<QSError, QSUser>> {
         val observable = MutableLiveData<Either<QSError, QSUser>>()
         val token = credentials.idToken
 
@@ -59,7 +60,7 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : IAuthRepository {
     }
 
     override fun signIn(credentials: QSUserCredentials):
-            MutableLiveData<Either<QSError, QSUser>> {
+            LiveData<Either<QSError, QSUser>> {
         require(credentials.email.isNotBlank())
         require(credentials.password.isNotBlank())
 
@@ -84,7 +85,7 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : IAuthRepository {
     }
 
     override fun signUp(credentials: QSUserCredentials):
-            MutableLiveData<Either<QSError, QSUser>> {
+            LiveData<Either<QSError, QSUser>> {
         require(credentials.email.isNotBlank())
         require(credentials.password.isNotBlank())
 

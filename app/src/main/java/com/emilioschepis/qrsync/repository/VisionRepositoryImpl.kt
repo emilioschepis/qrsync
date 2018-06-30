@@ -1,5 +1,6 @@
 package com.emilioschepis.qrsync.repository
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import arrow.core.Either
 import arrow.core.left
@@ -12,7 +13,8 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 
 class VisionRepositoryImpl(private val vision: FirebaseVision) : IVisionRepository {
-    override fun scanImage(bytes: ByteArray, width: Int, height: Int): MutableLiveData<Either<QSError, List<FirebaseVisionBarcode>>> {
+    override fun scanImage(bytes: ByteArray, width: Int, height: Int):
+            LiveData<Either<QSError, List<FirebaseVisionBarcode>>> {
         val metadata = FirebaseVisionImageMetadata.Builder()
                 .setWidth(width)
                 .setHeight(height)
