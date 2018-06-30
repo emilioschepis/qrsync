@@ -15,12 +15,13 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.otaliastudios.cameraview.CameraView
 import com.otaliastudios.cameraview.Flash
 import org.koin.android.architecture.ext.viewModel
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 class ScanActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<ScanViewModel>()
-    private var processing: Boolean = false
+    private val processing = AtomicBoolean(false)
 
     private val root by lazy { findViewById<CoordinatorLayout>(R.id.scan_root_cdl) }
     private val camera by lazy { findViewById<CameraView>(R.id.scan_cmv) }
@@ -31,8 +32,8 @@ class ScanActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scan)
 
         camera.addFrameProcessor { frame ->
-            if (!processing) {
-                processing = true
+            if (!processing.get()) {
+                processing.compareAndSet(false, true)
                 viewModel.scanImage(frame.data, frame.size.width, frame.size.height).observe(this@ScanActivity, Observer {
                     it?.fold(this@ScanActivity::onImageScanError, this@ScanActivity::onImageScanSuccess)
                 })
@@ -67,13 +68,13 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun onImageScanError(error: QSError) {
-        processing = false
+        processing.compareAndSet(true, false)
         snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
     }
 
     private fun onImageScanSuccess(barcodes: List<FirebaseVisionBarcode>) {
         if (barcodes.isEmpty()) {
-            processing = false
+            processing.compareAndSet(true, false)
         } else {
             PreferenceManager.getDefaultSharedPreferences(this)
                     .getBoolean("key_beep_on_code", true)
