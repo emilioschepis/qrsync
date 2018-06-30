@@ -27,44 +27,48 @@ class CodeListActivity : AppCompatActivity() {
     private val viewModel by viewModel<CodeListViewModel>()
     private val codeListAdapter = CodeListAdapter(this::onListItemClicked)
 
+    private val root by lazy { findViewById<CoordinatorLayout>(R.id.code_list_root_cdl) }
+    private val codesRev by lazy { findViewById<RecyclerView>(R.id.code_list_main_rev) }
+    private val scanFab by lazy { findViewById<FloatingActionButton>(R.id.code_list_scan_fab) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.code_list_loading_prb) }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_code_list)
 
-        findViewById<FloatingActionButton>(R.id.code_list_scan_fab)
-                .run {
-                    setOnClickListener {
-                        val intent = Intent(this@CodeListActivity, ScanActivity::class.java)
-                        startActivity(intent)
-                    }
+
+        scanFab.run {
+            setOnClickListener {
+                val intent = Intent(this@CodeListActivity, ScanActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        codesRev.run {
+            // Initialize layoutManager and decorations
+            val layoutManager = LinearLayoutManager(this@CodeListActivity)
+            val decoration = DividerItemDecoration(this@CodeListActivity, layoutManager.orientation)
+            val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+
+                // The scroll is only necessary if new items are added as
+                // newly added items are usually positioned on top.
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    layoutManager.scrollToPosition(positionStart)
+                    super.onItemRangeChanged(positionStart, itemCount)
                 }
+            }
+            codeListAdapter.registerAdapterDataObserver(adapterDataObserver)
 
-        findViewById<RecyclerView>(R.id.code_list_main_rev)
-                .run {
-                    // Initialize layoutManager and decorations
-                    val layoutManager = LinearLayoutManager(this@CodeListActivity)
-                    val decoration = DividerItemDecoration(this@CodeListActivity, layoutManager.orientation)
-                    val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
-
-                        // The scroll is only necessary if new items are added as
-                        // newly added items are usually positioned on top.
-                        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                            layoutManager.scrollToPosition(positionStart)
-                            super.onItemRangeChanged(positionStart, itemCount)
-                        }
-                    }
-                    codeListAdapter.registerAdapterDataObserver(adapterDataObserver)
-
-                    // The cells' height does not change
-                    setHasFixedSize(true)
-                    addItemDecoration(decoration)
-                    setLayoutManager(layoutManager)
-                    adapter = codeListAdapter
-                }
+            // The cells' height does not change
+            setHasFixedSize(true)
+            addItemDecoration(decoration)
+            setLayoutManager(layoutManager)
+            adapter = codeListAdapter
+        }
 
         viewModel.loading.observe(this, Observer {
             it?.let {
-                val progressBar = findViewById<ProgressBar>(R.id.code_list_loading_prb)
                 if (it) {
                     codeListAdapter.submitList(emptyList())
                     progressBar.visibility = View.VISIBLE
@@ -113,7 +117,6 @@ class CodeListActivity : AppCompatActivity() {
     private fun snackbarMessage(message: String,
                                 duration: Int = Snackbar.LENGTH_INDEFINITE,
                                 callback: (() -> Unit)? = null): Snackbar {
-        val root = findViewById<CoordinatorLayout>(R.id.code_list_root_cdl)
         val snackbar = Snackbar.make(root, message, duration)
 
         if (duration == Snackbar.LENGTH_INDEFINITE) {

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
-import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -20,15 +19,21 @@ class SignUpActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<SignUpViewModel>()
 
+    private val root by lazy { findViewById<CoordinatorLayout>(R.id.sign_up_root_cdl) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.sign_up_loading_prb) }
+    private val emailTil by lazy { findViewById<TextInputLayout>(R.id.sign_up_email_til) }
+    private val passwordTil by lazy { findViewById<TextInputLayout>(R.id.sign_up_password_til) }
+    private val submitBtn by lazy { findViewById<Button>(R.id.sign_up_submit_btn) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        findViewById<Button>(R.id.sign_up_submit_btn).setOnClickListener {
+        submitBtn.setOnClickListener {
             // When the Sign Up button is clicked, the TIL text is
             // sent to the ViewModel for validation
-            val email = findViewById<TextInputEditText>(R.id.sign_up_email_iet).text.toString()
-            val password = findViewById<TextInputEditText>(R.id.sign_up_password_iet).text.toString()
+            val email = emailTil.editText?.text.toString()
+            val password = passwordTil.editText?.text.toString()
 
             viewModel.register(email, password).observe(this, Observer {
                 it?.fold(this::onRegistrationError) { onRegistrationSuccess() }
@@ -37,8 +42,6 @@ class SignUpActivity : AppCompatActivity() {
 
         viewModel.loading.observe(this, Observer {
             it?.let {
-                val progressBar = findViewById<ProgressBar>(R.id.sign_up_loading_prb)
-                val submitBtn = findViewById<Button>(R.id.sign_up_submit_btn)
                 if (it) {
                     progressBar.visibility = View.VISIBLE
                     submitBtn.visibility = View.GONE
@@ -51,8 +54,8 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun clearErrors() {
-        findViewById<TextInputLayout>(R.id.sign_up_email_til).error = null
-        findViewById<TextInputLayout>(R.id.sign_up_password_til).error = null
+        emailTil.error = null
+        passwordTil.error = null
     }
 
     private fun onRegistrationError(error: QSError) {
@@ -75,7 +78,6 @@ class SignUpActivity : AppCompatActivity() {
     private fun snackbarMessage(message: String,
                                 duration: Int = Snackbar.LENGTH_INDEFINITE,
                                 callback: (() -> Unit)? = null): Snackbar {
-        val root = findViewById<CoordinatorLayout>(R.id.sign_up_root_cdl)
         val snackbar = Snackbar.make(root, message, duration)
 
         if (duration == Snackbar.LENGTH_INDEFINITE) {
@@ -88,16 +90,11 @@ class SignUpActivity : AppCompatActivity() {
     private val QSError.AuthenticationError.associatedView: TextInputLayout?
         get() {
             return when (this) {
-                is QSError.AuthenticationError.EmptyEmail ->
-                    findViewById(R.id.sign_up_email_til)
-                is QSError.AuthenticationError.MalformedEmail ->
-                    findViewById(R.id.sign_up_email_til)
-                is QSError.AuthenticationError.UserCollision ->
-                    findViewById(R.id.sign_up_email_til)
-                is QSError.AuthenticationError.EmptyPassword ->
-                    findViewById(R.id.sign_up_password_til)
-                is QSError.AuthenticationError.WeakPassword ->
-                    findViewById(R.id.sign_up_password_til)
+                QSError.AuthenticationError.EmptyEmail,
+                QSError.AuthenticationError.MalformedEmail,
+                QSError.AuthenticationError.UserCollision -> emailTil
+                QSError.AuthenticationError.EmptyPassword,
+                QSError.AuthenticationError.WeakPassword -> passwordTil
                 else -> null
             }
         }

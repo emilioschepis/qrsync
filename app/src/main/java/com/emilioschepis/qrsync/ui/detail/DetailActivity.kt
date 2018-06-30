@@ -29,11 +29,17 @@ class DetailActivity : AppCompatActivity() {
     private val viewModel by viewModel<DetailViewModel> { mapOf("id" to intent.getStringExtra("code_id")) }
     private val actionListAdapter = DetailActionAdapter(this::onActionSelected)
 
+    private val root by lazy { findViewById<CoordinatorLayout>(R.id.detail_root_cdl) }
+    private val actionsRev by lazy { findViewById<RecyclerView>(R.id.detail_actions_rev) }
+    private val contentTev by lazy { findViewById<TextView>(R.id.detail_content_tev) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.detail_loading_prb) }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        findViewById<RecyclerView>(R.id.detail_actions_rev).run {
+        actionsRev.run {
             // Initialize layoutManager and decorations
             val layoutManager = LinearLayoutManager(this@DetailActivity)
             val decoration = DividerItemDecoration(this@DetailActivity, layoutManager.orientation)
@@ -57,7 +63,6 @@ class DetailActivity : AppCompatActivity() {
 
         viewModel.loading.observe(this, Observer {
             it?.let {
-                val progressBar = findViewById<ProgressBar>(R.id.detail_loading_prb)
                 if (it) {
                     progressBar.visibility = View.VISIBLE
                 } else {
@@ -157,8 +162,7 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.title =
                 if (code.title.isBlank()) getString(R.string.placeholder_no_title) else code.title
 
-        findViewById<TextView>(R.id.detail_content_tev).text =
-                code.content
+        contentTev.text = code.content
     }
 
     private fun onActionsChanged(actions: List<QSCodeAction>?) {
@@ -168,7 +172,6 @@ class DetailActivity : AppCompatActivity() {
     private fun snackbarMessage(message: String,
                                 duration: Int = Snackbar.LENGTH_INDEFINITE,
                                 callback: (() -> Unit)? = null): Snackbar {
-        val root = findViewById<CoordinatorLayout>(R.id.detail_root_cdl)
         val snackbar = Snackbar.make(root, message, duration)
 
         if (duration == Snackbar.LENGTH_INDEFINITE) {

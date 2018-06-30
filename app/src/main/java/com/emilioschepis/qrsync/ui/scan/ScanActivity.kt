@@ -20,27 +20,26 @@ import org.koin.android.architecture.ext.viewModel
 class ScanActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<ScanViewModel>()
-    private val tone = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-    private lateinit var camera: com.otaliastudios.cameraview.CameraView
     private var processing: Boolean = false
+
+    private val root by lazy { findViewById<CoordinatorLayout>(R.id.scan_root_cdl) }
+    private val camera by lazy { findViewById<CameraView>(R.id.scan_cmv) }
+    private val flashToggle by lazy { findViewById<ToggleButton>(R.id.scan_flash_tgb) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
 
-        camera = findViewById<CameraView>(R.id.scan_cmv)
-                .apply {
-                    addFrameProcessor { frame ->
-                        if (!processing) {
-                            processing = true
-                            viewModel.scanImage(frame.data, frame.size.width, frame.size.height).observe(this@ScanActivity, Observer {
-                                it?.fold(this@ScanActivity::onImageScanError, this@ScanActivity::onImageScanSuccess)
-                            })
-                        }
-                    }
-                }
+        camera.addFrameProcessor { frame ->
+            if (!processing) {
+                processing = true
+                viewModel.scanImage(frame.data, frame.size.width, frame.size.height).observe(this@ScanActivity, Observer {
+                    it?.fold(this@ScanActivity::onImageScanError, this@ScanActivity::onImageScanSuccess)
+                })
+            }
+        }
 
-        findViewById<ToggleButton>(R.id.scan_flash_tgb).setOnCheckedChangeListener { _, isChecked ->
+        flashToggle.setOnCheckedChangeListener { _, isChecked ->
             camera.flash = if (isChecked) Flash.TORCH else Flash.OFF
 
         }
@@ -76,14 +75,14 @@ class ScanActivity : AppCompatActivity() {
         if (barcodes.isEmpty()) {
             processing = false
         } else {
-
-
-            val shouldBeep = PreferenceManager.getDefaultSharedPreferences(this)
+            PreferenceManager.getDefaultSharedPreferences(this)
                     .getBoolean("key_beep_on_code", true)
-
-            if (shouldBeep) {
-                tone.startTone(ToneGenerator.TONE_PROP_BEEP2)
-            }
+                    .run {
+                        if (this) {
+                            ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+                                    .startTone(ToneGenerator.TONE_PROP_BEEP2)
+                        }
+                    }
 
             camera.stop()
             uploadCodes(barcodes)
@@ -101,7 +100,6 @@ class ScanActivity : AppCompatActivity() {
     private fun snackbarMessage(message: String,
                                 duration: Int = Snackbar.LENGTH_INDEFINITE,
                                 callback: (() -> Unit)? = null): Snackbar {
-        val root = findViewById<CoordinatorLayout>(R.id.scan_root_cdl)
         val snackbar = Snackbar.make(root, message, duration)
 
         if (duration == Snackbar.LENGTH_INDEFINITE) {

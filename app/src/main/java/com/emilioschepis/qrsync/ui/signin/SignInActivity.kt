@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
-import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -28,35 +27,40 @@ class SignInActivity : AppCompatActivity() {
     private val viewModel by viewModel<SignInViewModel>()
     private var googleApiClient: GoogleApiClient? = null
 
+    private val root by lazy { findViewById<CoordinatorLayout>(R.id.sign_in_root_cdl) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.sign_in_loading_prb) }
+    private val emailTil by lazy { findViewById<TextInputLayout>(R.id.sign_in_email_til) }
+    private val passwordTil by lazy { findViewById<TextInputLayout>(R.id.sign_in_password_til) }
+    private val submitBtn by lazy { findViewById<Button>(R.id.sign_in_submit_btn) }
+    private val createBtn by lazy { findViewById<Button>(R.id.sign_in_create_account_btn) }
+    private val googleBtn by lazy { findViewById<Button>(R.id.sign_in_google_btn) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        findViewById<Button>(R.id.sign_in_submit_btn).setOnClickListener {
+        submitBtn.setOnClickListener {
             // When the Sign In button is clicked, the TIL text is
             // sent to the ViewModel for validation
-            val email = findViewById<TextInputEditText>(R.id.sign_in_email_iet).text.toString()
-            val password = findViewById<TextInputEditText>(R.id.sign_in_password_iet).text.toString()
+            val email = emailTil.editText?.text.toString()
+            val password = passwordTil.editText?.text.toString()
 
             viewModel.authenticate(email, password).observe(this, Observer {
                 it?.fold(this::onAuthenticationError) { onAuthenticationSuccess() }
             })
         }
 
-        findViewById<Button>(R.id.sign_in_create_account_btn).setOnClickListener {
+        createBtn.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
 
-        findViewById<Button>(R.id.sign_in_google_btn).setOnClickListener {
+        googleBtn.setOnClickListener {
             configureGoogleSignIn()
             startActivityForResult(googleSignInIntent, 6006)
         }
 
         viewModel.loading.observe(this, Observer {
             it?.let {
-                val progressBar = findViewById<ProgressBar>(R.id.sign_in_loading_prb)
-                val submitBtn = findViewById<Button>(R.id.sign_in_submit_btn)
-                val googleBtn = findViewById<Button>(R.id.sign_in_google_btn)
                 if (it) {
                     progressBar.visibility = View.VISIBLE
                     submitBtn.visibility = View.GONE
@@ -96,8 +100,8 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun clearErrors() {
-        findViewById<TextInputLayout>(R.id.sign_in_email_til).error = null
-        findViewById<TextInputLayout>(R.id.sign_in_password_til).error = null
+        emailTil.error = null
+        passwordTil.error = null
     }
 
     private fun configureGoogleSignIn() {
@@ -132,7 +136,6 @@ class SignInActivity : AppCompatActivity() {
     private fun snackbarMessage(message: String,
                                 duration: Int = Snackbar.LENGTH_INDEFINITE,
                                 callback: (() -> Unit)? = null): Snackbar {
-        val root = findViewById<CoordinatorLayout>(R.id.sign_in_root_cdl)
         val snackbar = Snackbar.make(root, message, duration)
 
         if (duration == Snackbar.LENGTH_INDEFINITE) {
@@ -151,18 +154,12 @@ class SignInActivity : AppCompatActivity() {
     private val QSError.AuthenticationError.associatedView: TextInputLayout?
         get() {
             return when (this) {
-                is QSError.AuthenticationError.InvalidUser ->
-                    findViewById(R.id.sign_in_email_til)
-                is QSError.AuthenticationError.InvalidCredentials ->
-                    findViewById(R.id.sign_in_password_til)
-                is QSError.AuthenticationError.EmptyEmail ->
-                    findViewById(R.id.sign_in_email_til)
-                is QSError.AuthenticationError.EmptyPassword ->
-                    findViewById(R.id.sign_in_password_til)
-                is QSError.AuthenticationError.MalformedEmail ->
-                    findViewById(R.id.sign_in_email_til)
-                is QSError.AuthenticationError.WeakPassword ->
-                    findViewById(R.id.sign_in_password_til)
+                QSError.AuthenticationError.EmptyEmail,
+                QSError.AuthenticationError.MalformedEmail,
+                QSError.AuthenticationError.InvalidUser -> emailTil
+                QSError.AuthenticationError.EmptyPassword,
+                QSError.AuthenticationError.WeakPassword,
+                QSError.AuthenticationError.InvalidCredentials -> passwordTil
                 else -> null
             }
         }
