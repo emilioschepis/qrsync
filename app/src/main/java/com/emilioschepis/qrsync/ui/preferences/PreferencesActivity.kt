@@ -21,11 +21,13 @@ class PreferencesActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> {
-                onBackPressed(); true
+                // Respond to the action bar's Up/Home button
+                finish()
+                return true
             }
-            else -> super.onOptionsItemSelected(item)
         }
+        return super.onOptionsItemSelected(item)
     }
 }
