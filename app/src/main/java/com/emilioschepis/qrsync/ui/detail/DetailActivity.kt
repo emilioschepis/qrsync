@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -37,6 +38,8 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         actionsRev.run {
             // Initialize layoutManager and decorations
@@ -75,6 +78,17 @@ class DetailActivity : AppCompatActivity() {
         })
 
         viewModel.actions.observe(this, Observer { onActionsChanged(it) })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                // Respond to the action bar's Up/Home button
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun onActionSelected(action: QSCodeAction) {
