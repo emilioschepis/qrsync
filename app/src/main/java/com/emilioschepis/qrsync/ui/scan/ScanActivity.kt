@@ -79,7 +79,7 @@ class ScanActivity : AppCompatActivity() {
 
 
             val shouldBeep = PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean("key_beep_on_code", false)
+                    .getBoolean("key_beep_on_code", true)
 
             if (shouldBeep) {
                 tone.startTone(ToneGenerator.TONE_PROP_BEEP2)
