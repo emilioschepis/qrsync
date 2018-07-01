@@ -6,12 +6,17 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v14.preference.SwitchPreference
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.widget.Toast
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSError
+import com.google.firebase.iid.FirebaseInstanceId
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.koin.android.architecture.ext.viewModel
+import java.io.IOException
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
@@ -19,6 +24,45 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)
+
+        // When an user attempts to change the FCM preference
+        // we need to inform them that an FCM ID might be saved
+        findPreference("key_fcm_permission").onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
+            assert(newValue is Boolean)
+            assert(pref is SwitchPreference)
+
+            val preference = pref as SwitchPreference
+
+            // If the user is disabling push notifications
+            // we immediately do so
+            // If the user is enabling them, we show them a dialog
+            // explaining that an Instance ID might be saved
+            if (newValue == false) {
+                preference.isChecked = false
+
+                // Firebase Instance ID deletion has to be called outside
+                // of the main thread
+                doAsync {
+                    try {
+                        FirebaseInstanceId.getInstance().deleteInstanceId()
+                    } catch (ex: IOException) {
+                        uiThread {
+                            showMessage(getString(R.string.error_generic_unknown_reason, ex.message))
+                        }
+                    }
+                }
+            } else {
+                showConfirmationDialog(getString(R.string.info_enabling_fcm)) {
+                    preference.isChecked = true
+
+                    // Generating a new ID is necessary as the autoinit
+                    // property is permanently set to false
+                    FirebaseInstanceId.getInstance().instanceId
+                }
+            }
+
+            return@OnPreferenceChangeListener false
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

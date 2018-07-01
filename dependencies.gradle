@@ -13,6 +13,7 @@ ext {
             koinVersion             : '0.9.3',
             cameraViewVersion       : '1.5.1',
             progressBarVersion      : '1.4.2',
+            ankoVersion             : '0.10.5',
             playServicesVersion     : [
                     auth : '15.0.1'
             ],
@@ -71,8 +72,9 @@ ext {
 
             cameraView: "com.otaliastudios:cameraview:$versions.cameraViewVersion",
 
-            progressBar: "me.zhanghai.android.materialprogressbar:library:$versions.progressBarVersion"
+            progressBar: "me.zhanghai.android.materialprogressbar:library:$versions.progressBarVersion",
 
+            anko: "org.jetbrains.anko:anko-commons:$versions.ankoVersion"
     ]
 
     testLibraries = [

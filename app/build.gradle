@@ -39,6 +39,7 @@ dependencies {
     implementation libraries.koin
     implementation libraries.arrow
     implementation libraries.progressBar
+    implementation libraries.anko
     kapt annotationProcessors.arrowAp
 
     testImplementation testLibraries.jUnit

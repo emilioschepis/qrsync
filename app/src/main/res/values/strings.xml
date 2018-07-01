@@ -38,6 +38,9 @@
     <string name="preference_category_preferences">Preferences</string>
     <string name="preference_title_beep_on_code">Play sound</string>
     <string name="preference_summary_beep_on_code">Play sound on QR code found</string>
+    <string name="preference_summary_fcm_permission_on">You will receive news and announcements</string>
+    <string name="preference_summary_fcm_permission_off">You will not receive news and announcements</string>
+    <string name="preference_title_fcm_permission">Push notifications</string>
 
     <!-- Headers -->
     <string name="header_created">Created</string>
@@ -80,4 +83,5 @@
     <string name="preference_summary_delete_all_codes">Delete all of your saved codes</string>
     <string name="question_delete_all_codes">Do you want to delete all of your saved codes? This action can not be undone</string>
     <string name="notification_channel_info_name">Info and news</string>
+    <string name="info_enabling_fcm">Enabling push notifications will generate a unique ID which will be used to reach this device.\n\nThe unique ID can\'t be used to personally identify you and will not be saved by QR Sync.\n\nDo you want to enable push notifications?</string>
 </resources>

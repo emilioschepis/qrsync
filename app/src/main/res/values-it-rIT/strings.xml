@@ -65,4 +65,9 @@
     <string name="preference_title_delete_all_codes">Cancella tutto</string>
     <string name="preference_summary_delete_all_codes">Cancella tutti i codici che hai salvato</string>
     <string name="notification_channel_info_name">Informazioni e news</string>
+    <string name="preference_summary_fcm_permission_on">Riceverai notizie ed aggiornamenti</string>
+    <string name="preference_summary_fcm_permission_off">Non riceverai notizie ed aggiornamenti</string>
+    <string name="preference_title_fcm_permission">Notifiche push</string>
+    <string name="info_enabling_fcm">Abilitando le notifiche push verrà generato un ID univoco che verrà usato per raggiungere il tuo dispositivo.\n\n L\'ID univoco non può identificarti personalmente, e non verrà salvato da QR Sync.\n\nVuoi abilitare le notifiche push?</string>
+
 </resources>

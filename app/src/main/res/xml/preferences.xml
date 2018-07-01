@@ -17,6 +17,11 @@
             android:title="@string/preference_title_delete_all_codes" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_category_extra">
+        <SwitchPreference
+            android:key="key_fcm_permission"
+            android:summaryOff="@string/preference_summary_fcm_permission_off"
+            android:summaryOn="@string/preference_summary_fcm_permission_on"
+            android:title="@string/preference_title_fcm_permission" />
         <Preference
             android:key="key_info"
             android:summary="@string/preference_summary_info"
