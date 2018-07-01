@@ -64,5 +64,5 @@
     <string name="question_delete_all_codes">Vuoi cancellare tutti i tuoi codici? L\'azione è irreversibile</string>
     <string name="preference_title_delete_all_codes">Cancella tutto</string>
     <string name="preference_summary_delete_all_codes">Cancella tutti i codici che hai salvato</string>
-
+    <string name="notification_channel_info_name">Informazioni e news</string>
 </resources>

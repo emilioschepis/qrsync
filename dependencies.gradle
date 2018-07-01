@@ -20,7 +20,8 @@ ext {
                     core          : '16.0.1',
                     authentication: '16.0.2',
                     firestore     : '17.0.2',
-                    vision        : '16.0.0'
+                    vision        : '16.0.0',
+                    messaging     : '17.1.0'
             ]
     ]
 
@@ -41,7 +42,8 @@ ext {
                     "com.google.firebase:firebase-core:$versions.firebaseVersion.core",
                     "com.google.firebase:firebase-auth:$versions.firebaseVersion.authentication",
                     "com.google.firebase:firebase-firestore:$versions.firebaseVersion.firestore",
-                    "com.google.firebase:firebase-ml-vision:$versions.firebaseVersion.vision"
+                    "com.google.firebase:firebase-ml-vision:$versions.firebaseVersion.vision",
+                    "com.google.firebase:firebase-messaging:$versions.firebaseVersion.messaging"
             ],
             
             koin: [
