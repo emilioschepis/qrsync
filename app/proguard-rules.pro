@@ -22,17 +22,16 @@
 -keepattributes *Annotation*
 
 # Model
--keep class com.emilioschepis.qrsync.model.* { *; }
+-keep class com.emilioschepis.qrsync.model.** { *; }
 -dontwarn com.emilioschepis.qrsync.model.**
 
 # Arrow
 -dontwarn arrow.**
 
 # Firebase
--dontwarn com.google.firebase.*
-
-# GMS
--dontwarn com.google.android.gms.*
+# This is needed for deserializing Phone, Calendar, Contact
+-keepclassmembers class com.google.firebase.ml.vision.barcode.** { *; }
+-keepclassmembers class com.google.android.gms.vision.barcode.** { *; }
 
 # CameraView
 -dontwarn com.otaliastudios.cameraview.CameraView
