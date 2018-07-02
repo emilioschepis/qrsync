@@ -25,6 +25,9 @@ android {
         debug {
             minifyEnabled true
             useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro',
+                    'proguard-rules-debug.pro'
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
         }
@@ -34,7 +37,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation libraries.kotlin
-
     implementation libraries.lifecycle
     implementation libraries.support
     implementation libraries.playServices
@@ -45,9 +47,7 @@ dependencies {
     implementation libraries.arrow
     implementation libraries.progressBar
     implementation libraries.anko
-
     testImplementation testLibraries.jUnit
-
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
