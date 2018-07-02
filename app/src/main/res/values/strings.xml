@@ -84,4 +84,5 @@
     <string name="question_delete_all_codes">Do you want to delete all of your saved codes? This action can not be undone</string>
     <string name="notification_channel_info_name">Info and news</string>
     <string name="info_enabling_fcm">Enabling push notifications will generate a unique ID which will be used to reach this device.\n\nThe unique ID can\'t be used to personally identify you and will not be saved by QR Sync.\n\nDo you want to enable push notifications?</string>
+    <string name="error_play_services_required">Google Play Service is required to use this application</string>
 </resources>
