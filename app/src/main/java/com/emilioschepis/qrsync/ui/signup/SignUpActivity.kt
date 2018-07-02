@@ -13,7 +13,7 @@ import android.widget.ProgressBar
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSError
 import com.emilioschepis.qrsync.ui.codelist.CodeListActivity
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SignUpActivity : AppCompatActivity() {
 

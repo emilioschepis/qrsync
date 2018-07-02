@@ -10,7 +10,7 @@ import com.emilioschepis.qrsync.ui.codelist.CodeListActivity
 import com.emilioschepis.qrsync.ui.signin.SignInActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashActivity : AppCompatActivity() {
 

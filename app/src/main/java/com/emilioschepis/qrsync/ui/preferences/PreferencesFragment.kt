@@ -15,7 +15,7 @@ import com.emilioschepis.qrsync.model.QSError
 import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
 
 class PreferencesFragment : PreferenceFragmentCompat() {

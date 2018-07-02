@@ -20,7 +20,7 @@ import com.emilioschepis.qrsync.model.QSError
 import com.emilioschepis.qrsync.ui.detail.DetailActivity
 import com.emilioschepis.qrsync.ui.preferences.PreferencesActivity
 import com.emilioschepis.qrsync.ui.scan.ScanActivity
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CodeListActivity : AppCompatActivity() {
 

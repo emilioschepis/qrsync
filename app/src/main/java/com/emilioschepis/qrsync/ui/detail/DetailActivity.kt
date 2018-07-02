@@ -23,11 +23,12 @@ import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSCodeAction
 import com.emilioschepis.qrsync.model.QSError
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.DateFormat
 
 class DetailActivity : AppCompatActivity() {
-    private val viewModel by viewModel<DetailViewModel> { mapOf("id" to intent.getStringExtra("code_id")) }
+    private val viewModel by viewModel<DetailViewModel> { parametersOf(intent.getStringExtra("code_id")) }
     private val actionListAdapter = DetailActionAdapter(this::onActionSelected)
 
     private val root by lazy { findViewById<CoordinatorLayout>(R.id.detail_root_cdl) }

@@ -10,7 +10,7 @@ ext {
             lifecycleVersion        : '1.1.1',
             arrowVersion            : '0.7.2',
             gsonVersion             : '2.8.5',
-            koinVersion             : '0.9.3',
+            koinVersion             : '1.0.0-alpha-28',
             cameraViewVersion       : '1.5.1',
             progressBarVersion      : '1.4.2',
             ankoVersion             : '0.10.5',
@@ -50,7 +50,7 @@ ext {
             koin: [
                     "org.koin:koin-core:$versions.koinVersion",
                     "org.koin:koin-android:$versions.koinVersion",
-                    "org.koin:koin-android-architecture:$versions.koinVersion"
+                    "org.koin:koin-android-viewmodel:$versions.koinVersion"
             ],
             
             support: [

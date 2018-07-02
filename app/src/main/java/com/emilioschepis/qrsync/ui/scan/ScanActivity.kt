@@ -14,7 +14,7 @@ import com.emilioschepis.qrsync.model.QSError
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.otaliastudios.cameraview.CameraView
 import com.otaliastudios.cameraview.Flash
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.atomic.AtomicBoolean
 
 
