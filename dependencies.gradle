@@ -84,8 +84,4 @@ ext {
     androidTestLibraries = [
 
     ]
-
-    annotationProcessors = [
-            arrowAp: "io.arrow-kt:arrow-annotations-processor:$versions.arrowVersion"
-    ]
 }
