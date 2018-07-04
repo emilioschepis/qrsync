@@ -5,12 +5,13 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import arrow.core.*
 import com.emilioschepis.qrsync.model.QSCode
+import com.emilioschepis.qrsync.model.QSCodeListLiveData
+import com.emilioschepis.qrsync.model.QSCodeLiveData
 import com.emilioschepis.qrsync.model.QSError
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
                               private val auth: FirebaseAuth) : IFirestoreRepository {
@@ -56,47 +57,13 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
 
     override fun retrieveCollection():
             LiveData<Either<QSError, List<QSCode>>> {
-        val observable = MutableLiveData<Either<QSError, List<QSCode>>>()
-
-        codesReference.orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                // An error occurred.
-                val error = QSError.fromException(exception)
-                observable.postValue(error.left())
-            } else {
-                // The list might be null, in that case an
-                // emptyList is automatically passed as the
-                // result
-                snapshot?.toObjects(QSCode::class.java)?.let {
-                    observable.postValue(it.right())
-                }
-            }
-        }
-        return observable
+        return Transformations.map(QSCodeListLiveData(codesReference)) { it }
     }
 
     override fun retrieveCode(id: String):
             LiveData<Either<QSError, QSCode>> {
         val codeReference = codesReference.document(id)
-        val observable = MutableLiveData<Either<QSError, QSCode>>()
-
-        codeReference.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                // An error occurred.
-                val error = QSError.fromException(exception)
-                observable.postValue(error.left())
-            } else {
-                // The detail must not be null, that would
-                // mean that the code was not found.
-                val detail = snapshot?.toObject(QSCode::class.java)
-                if (snapshot == null || detail == null) {
-                    observable.postValue(QSError.DatabaseError.NotFound.left())
-                } else {
-                    observable.postValue(detail.right())
-                }
-            }
-        }
-        return observable
+        return Transformations.map(QSCodeLiveData(codeReference)) { it }
     }
 
     override fun uploadCodes(codes: List<QSCode>):

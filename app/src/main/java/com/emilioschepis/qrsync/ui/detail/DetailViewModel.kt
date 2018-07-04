@@ -15,6 +15,8 @@ import com.emilioschepis.qrsync.repository.IFirestoreRepository
 class DetailViewModel(private val id: String,
                       private val firestore: IFirestoreRepository) : ViewModel() {
 
+    private val repositoryCode = Transformations.map(firestore.retrieveCode(id)) { it }
+
     private val mutableLoading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
         get() = mutableLoading
@@ -22,14 +24,14 @@ class DetailViewModel(private val id: String,
     val code: LiveData<Either<QSError, QSCode>>
         get() {
             mutableLoading.value = true
-            return Transformations.map(firestore.retrieveCode(id)) {
+            return Transformations.map(repositoryCode) {
                 mutableLoading.value = false
                 return@map it
             }
         }
 
     val actions: LiveData<List<QSCodeAction>> =
-            Transformations.map(code) {
+            Transformations.map(repositoryCode) {
                 it.fold({
                     emptyList<QSCodeAction>()
                 }, {

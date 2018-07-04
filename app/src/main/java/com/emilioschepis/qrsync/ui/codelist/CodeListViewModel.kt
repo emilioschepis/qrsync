@@ -9,7 +9,9 @@ import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSError
 import com.emilioschepis.qrsync.repository.IFirestoreRepository
 
-class CodeListViewModel(private val firestore: IFirestoreRepository) : ViewModel() {
+class CodeListViewModel(firestore: IFirestoreRepository) : ViewModel() {
+
+    private val repositoryCollection = Transformations.map(firestore.retrieveCollection()) { it }
 
     private val mutableLoading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
@@ -18,9 +20,9 @@ class CodeListViewModel(private val firestore: IFirestoreRepository) : ViewModel
     val collection: LiveData<Either<QSError, List<QSCode>>>
         get() {
             mutableLoading.value = true
-            return Transformations.map(firestore.retrieveCollection()) {
+            return Transformations.map(repositoryCollection) {
                 mutableLoading.value = false
-                it
+                return@map it
             }
         }
 }
