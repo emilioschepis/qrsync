@@ -13,6 +13,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode.TYPE_ISBN
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode.TYPE_PRODUCT
 import com.google.gson.Gson
+import org.jetbrains.anko.doAsyncResult
 
 class ScanViewModel(private val vision: IVisionRepository,
                     private val firestore: IFirestoreRepository) : ViewModel() {
@@ -22,8 +23,8 @@ class ScanViewModel(private val vision: IVisionRepository,
     }
 
     fun uploadCodes(barcodes: List<FirebaseVisionBarcode>): LiveData<Option<QSError>> {
-        val codes = barcodes.map { it.toCode() }
-        return Transformations.map(firestore.uploadCodes(codes)) { it }
+        val codes = doAsyncResult { barcodes.map { it.toCode() } }
+        return Transformations.map(firestore.uploadCodes(codes.get())) { it }
     }
 
     private fun FirebaseVisionBarcode.toCode(): QSCode {
