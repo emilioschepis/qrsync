@@ -10,11 +10,11 @@ import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.widget.Toast
 import com.emilioschepis.qrsync.R
+import com.emilioschepis.qrsync.extension.confirmationDialog
+import com.emilioschepis.qrsync.extension.dialog
 import com.emilioschepis.qrsync.model.QSError
 import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.okButton
-import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.uiThread
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
@@ -53,14 +53,12 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     }
                 }
             } else {
-                alert(message = getString(R.string.info_enabling_fcm)) {
-                    okButton {
-                        preference.isChecked = true
+                confirmationDialog(message = getString(R.string.info_enabling_fcm)) {
+                    preference.isChecked = true
 
-                        // Generating a new ID is necessary as the autoinit
-                        // property is permanently set to false
-                        FirebaseInstanceId.getInstance().instanceId
-                    }
+                    // Generating a new ID is necessary as the autoinit
+                    // property is permanently set to false
+                    FirebaseInstanceId.getInstance().instanceId
                 }.show()
             }
 
@@ -71,21 +69,16 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "key_sign_out" -> {
-                alert(message = getString(R.string.question_sign_out)) {
-                    okButton {
-                        viewModel.signOut()
-                        activity?.finishAffinity()
-                    }
+                confirmationDialog(message = getString(R.string.question_sign_out)) {
+                    viewModel.signOut()
+                    activity?.finishAffinity()
                 }.show()
             }
             "key_delete_all_codes" -> {
-                alert(message = getString(R.string.question_delete_all_codes)) {
-                    okButton {
-                        viewModel.deleteAllCodes().observe(this@PreferencesFragment, Observer {
-                            it?.fold(this@PreferencesFragment::onCodesDeletionSuccess,
-                                    this@PreferencesFragment::onCodesDeletionError)
-                        })
-                    }
+                confirmationDialog(message = getString(R.string.question_delete_all_codes)) {
+                    viewModel.deleteAllCodes().observe(this, Observer {
+                        it?.fold(this::onCodesDeletionSuccess, this::onCodesDeletionError)
+                    })
                 }.show()
             }
             "key_info" -> {
@@ -130,9 +123,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     private fun onInfoRetrievalSuccess(info: String) {
         val title = getString(R.string.dialog_title_info)
 
-        alert(title = title, message = info) {
-            okButton { }
-        }.show()
+        dialog(title, info).show()
     }
 
     private fun showMessage(message: String, duration: Int = Toast.LENGTH_LONG) {
