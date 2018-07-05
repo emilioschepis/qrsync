@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSCodeAction
 
@@ -17,10 +18,17 @@ class DetailActionAdapter(private val listener: (QSCodeAction) -> Unit) : ListAd
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), listener)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(action: QSCodeAction, listener: (QSCodeAction) -> Unit) = with(itemView) {
-            findViewById<TextView>(R.id.item_action_name).setText(action.name)
-            findViewById<ImageView>(R.id.item_action_icon).setImageResource(action.icon)
-            setOnClickListener { listener(action) }
+        fun bind(action: QSCodeAction, listener: (QSCodeAction) -> Unit) {
+            val nameTev by lazy { itemView.findViewById<TextView>(R.id.item_action_name) }
+            val iconImv by lazy { itemView.findViewById<ImageView>(R.id.item_action_icon) }
+
+            nameTev.setText(action.name)
+
+            Glide.with(itemView)
+                    .load(action.icon)
+                    .into(iconImv)
+
+            itemView.setOnClickListener { listener.invoke(action) }
         }
     }
 

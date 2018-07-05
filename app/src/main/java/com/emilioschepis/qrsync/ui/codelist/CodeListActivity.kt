@@ -108,9 +108,9 @@ class CodeListActivity : AppCompatActivity() {
         codeListAdapter.submitList(collection)
     }
 
-    private fun onListItemClicked(code: QSCode) {
+    private fun onListItemClicked(id: String) {
         startActivity(Intent(this, DetailActivity::class.java)
-                .apply { putExtra("code_id", code.id) })
+                .apply { putExtra("code_id", id) })
     }
 
     private fun snackbarMessage(message: String,

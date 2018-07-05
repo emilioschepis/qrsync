@@ -10,10 +10,11 @@ ext {
             lifecycleVersion        : '1.1.1',
             arrowVersion            : '0.7.2',
             gsonVersion             : '2.8.5',
-            koinVersion             : '1.0.0-alpha-28',
+            koinVersion             : '1.0.0-beta-2',
             cameraViewVersion       : '1.5.1',
             progressBarVersion      : '1.4.2',
             ankoVersion             : '0.10.5',
+            glideVersion            : '4.7.1',
             playServicesVersion     : [
                     auth : '15.0.1'
             ],
@@ -74,7 +75,11 @@ ext {
 
             progressBar: "me.zhanghai.android.materialprogressbar:library:$versions.progressBarVersion",
 
-            anko: "org.jetbrains.anko:anko-commons:$versions.ankoVersion"
+            anko: "org.jetbrains.anko:anko-commons:$versions.ankoVersion",
+
+            glide: "com.github.bumptech.glide:glide:$versions.glideVersion"
+
+
     ]
 
     testLibraries = [

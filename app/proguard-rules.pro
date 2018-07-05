@@ -35,3 +35,14 @@
 
 # CameraView
 -dontwarn com.otaliastudios.cameraview.CameraView
+
+# Arch
+-keep class android.arch.lifecycle.ViewModel {*;}
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
