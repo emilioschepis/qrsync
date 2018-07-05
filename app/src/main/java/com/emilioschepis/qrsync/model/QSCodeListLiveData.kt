@@ -58,6 +58,7 @@ class QSCodeListLiveData(private val reference: CollectionReference) :
             handler.removeCallbacks(removeListener)
         } else {
             registration = reference
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
                     .addSnapshotListener(this)
         }
         pending.set(false)
