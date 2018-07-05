@@ -9,20 +9,20 @@ import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.InputType
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSCodeAction
 import com.emilioschepis.qrsync.model.QSError
+import org.jetbrains.anko.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DateFormat
@@ -95,20 +95,25 @@ class DetailActivity : AppCompatActivity() {
     private fun onActionSelected(action: QSCodeAction) {
         when (action) {
             is QSCodeAction.Delete -> {
-                showConfirmationDialog(
-                        getString(R.string.dialog_title_confirmation),
-                        getString(R.string.question_delete_code)) {
-                    // When we delete a code we don't want to observe its changes
-                    viewModel.code.removeObservers(this)
-                    viewModel.deleteCode().observe(this, Observer {
-                        it?.fold(this::onCodeDeletionSuccess, this::onCodeDeletionError)
-                    })
-                }
+                val title = getString(R.string.dialog_title_confirmation)
+                val message = getString(R.string.question_delete_code)
+
+                alert(title = title, message = message) {
+                    okButton {
+                        // When we delete a code we don't want to observe its changes
+                        viewModel.code.removeObservers(this@DetailActivity)
+                        viewModel.deleteCode().observe(this@DetailActivity, Observer {
+                            it?.fold(this@DetailActivity::onCodeDeletionSuccess,
+                                    this@DetailActivity::onCodeDeletionError)
+                        })
+                    }
+                }.show()
             }
             is QSCodeAction.EditTitle -> {
-                showEditDialog(getString(
-                        R.string.dialog_title_title_edit),
-                        viewModel.currentCode.title) {
+                val title = getString(R.string.dialog_title_title_edit)
+                val message = viewModel.currentCode.title
+
+                showEditDialog(title, message) {
                     viewModel.editTitle(it).observe(this, Observer {
                         it?.fold(this::onCodeUpdateSuccess, this::onCodeUpdateError)
                     })
@@ -121,20 +126,15 @@ class DetailActivity : AppCompatActivity() {
                 snackbarMessage(getString(R.string.info_copied_content), Snackbar.LENGTH_SHORT).show()
             }
             is QSCodeAction.ReadInfo -> {
-                AlertDialog.Builder(this)
-                        .setMessage(viewModel.currentCode.infoText)
-                        .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .setNeutralButton(R.string.action_copy_id) { dialog, _ ->
-                            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText("QSCode.Id", viewModel.currentCode.id)
-                            clipboard.primaryClip = clip
-                            snackbarMessage(getString(R.string.info_copied_id), Snackbar.LENGTH_SHORT).show()
-                            dialog.dismiss()
-                        }
-                        .create()
-                        .show()
+                alert(message = viewModel.currentCode.infoText) {
+                    okButton { }
+                    neutralPressed(R.string.action_copy_id) {
+                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("QSCode.Id", viewModel.currentCode.id)
+                        clipboard.primaryClip = clip
+                        snackbarMessage(getString(R.string.info_copied_id), Snackbar.LENGTH_SHORT).show()
+                    }
+                }.show()
             }
             else -> {
                 try {
@@ -197,36 +197,21 @@ class DetailActivity : AppCompatActivity() {
         return snackbar
     }
 
-    private fun showConfirmationDialog(title: String, message: String, callback: () -> Unit) {
-        val builder = AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
-                    callback.invoke()
-                    dialogInterface.dismiss()
-                }
-
-        builder.create().show()
-    }
-
     @SuppressLint("InflateParams")
     private fun showEditDialog(title: String, currentText: String, callback: (String) -> Unit) {
-        val layout = layoutInflater.inflate(R.layout.dialog_custom_edit, null)
-        val editText = layout.findViewById<EditText>(R.id.dialog_custom_edt).apply {
-            this.setText(currentText)
-        }
-
-        val builder = AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setView(layout)
-                .setTitle(title)
-                .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
-                    callback.invoke(editText.text.toString())
-                    dialogInterface.dismiss()
+        alert(title = title, message = "") {
+            customView {
+                verticalLayout {
+                    setPadding(24, 0, 24, 0)
+                    val editText = editText {
+                        maxLines = 1
+                        inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                        setText(currentText)
+                    }
+                    okButton { callback.invoke(editText.text.toString()) }
                 }
-
-        builder.create().show()
+            }
+        }.show()
     }
 
     private val QSCode.infoText: String

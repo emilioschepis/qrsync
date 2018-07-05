@@ -1,6 +1,5 @@
 package com.emilioschepis.qrsync.ui.preferences
 
-import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -14,6 +13,8 @@ import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSError
 import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.okButton
+import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.uiThread
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
@@ -52,13 +53,15 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     }
                 }
             } else {
-                showConfirmationDialog(getString(R.string.info_enabling_fcm)) {
-                    preference.isChecked = true
+                alert(message = getString(R.string.info_enabling_fcm)) {
+                    okButton {
+                        preference.isChecked = true
 
-                    // Generating a new ID is necessary as the autoinit
-                    // property is permanently set to false
-                    FirebaseInstanceId.getInstance().instanceId
-                }
+                        // Generating a new ID is necessary as the autoinit
+                        // property is permanently set to false
+                        FirebaseInstanceId.getInstance().instanceId
+                    }
+                }.show()
             }
 
             return@OnPreferenceChangeListener false
@@ -68,17 +71,22 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "key_sign_out" -> {
-                showConfirmationDialog(getString(R.string.question_sign_out)) {
-                    viewModel.signOut()
-                    activity?.finishAffinity()
-                }
+                alert(message = getString(R.string.question_sign_out)) {
+                    okButton {
+                        viewModel.signOut()
+                        activity?.finishAffinity()
+                    }
+                }.show()
             }
             "key_delete_all_codes" -> {
-                showConfirmationDialog(getString(R.string.question_delete_all_codes)) {
-                    viewModel.deleteAllCodes().observe(this, Observer {
-                        it?.fold(this::onCodesDeletionSuccess, this::onCodesDeletionError)
-                    })
-                }
+                alert(message = getString(R.string.question_delete_all_codes)) {
+                    okButton {
+                        viewModel.deleteAllCodes().observe(this@PreferencesFragment, Observer {
+                            it?.fold(this@PreferencesFragment::onCodesDeletionSuccess,
+                                    this@PreferencesFragment::onCodesDeletionError)
+                        })
+                    }
+                }.show()
             }
             "key_info" -> {
                 viewModel.retrieveInfo().observe(this, Observer {
@@ -120,33 +128,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private fun onInfoRetrievalSuccess(info: String) {
-        showDialog(info)
-    }
+        val title = getString(R.string.dialog_title_info)
 
-    private fun showDialog(message: String) {
-        AlertDialog.Builder(activity)
-                .setCancelable(true)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
-    }
-
-    private fun showConfirmationDialog(message: String, callback: () -> Unit) {
-        AlertDialog.Builder(activity)
-                .setCancelable(true)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    callback.invoke()
-                    dialog.dismiss()
-                }
-                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
+        alert(title = title, message = info) {
+            okButton { }
+        }.show()
     }
 
     private fun showMessage(message: String, duration: Int = Toast.LENGTH_LONG) {

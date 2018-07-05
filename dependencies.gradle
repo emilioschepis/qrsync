@@ -39,7 +39,7 @@ ext {
                     "io.arrow-kt:arrow-instances-core:$versions.arrowVersion",
                     "io.arrow-kt:arrow-instances-data:$versions.arrowVersion"
             ],
-            
+
             firebase: [
                     "com.google.firebase:firebase-core:$versions.firebaseVersion.core",
                     "com.google.firebase:firebase-auth:$versions.firebaseVersion.authentication",
@@ -47,13 +47,13 @@ ext {
                     "com.google.firebase:firebase-ml-vision:$versions.firebaseVersion.vision",
                     "com.google.firebase:firebase-messaging:$versions.firebaseVersion.messaging"
             ],
-            
+
             koin: [
                     "org.koin:koin-core:$versions.koinVersion",
                     "org.koin:koin-android:$versions.koinVersion",
                     "org.koin:koin-android-viewmodel:$versions.koinVersion"
             ],
-            
+
             support: [
                     "com.android.support.constraint:constraint-layout:$versions.constraintLibraryVersion",
                     "com.android.support:support-annotations:$versions.supportLibraryVersion",
@@ -67,15 +67,19 @@ ext {
                   "com.google.android.gms:play-services-auth:$versions.playServicesVersion.auth"
             ],
 
+            anko: [
+                    "org.jetbrains.anko:anko-commons:$versions.ankoVersion",
+                    "org.jetbrains.anko:anko-appcompat-v7:$versions.ankoVersion",
+                    "org.jetbrains.anko:anko-sdk25:$versions.ankoVersion"
+            ],
+
             lifecycle: "android.arch.lifecycle:extensions:$versions.lifecycleVersion",
-            
+
             gson: "com.google.code.gson:gson:$versions.gsonVersion",
 
             cameraView: "com.otaliastudios:cameraview:$versions.cameraViewVersion",
 
             progressBar: "me.zhanghai.android.materialprogressbar:library:$versions.progressBarVersion",
-
-            anko: "org.jetbrains.anko:anko-commons:$versions.ankoVersion",
 
             glide: "com.github.bumptech.glide:glide:$versions.glideVersion"
 
