@@ -25,8 +25,13 @@ class VisionRepositoryImpl(private val vision: FirebaseVision) : IVisionReposito
         val observable = MutableLiveData<Either<QSError, List<FirebaseVisionBarcode>>>()
 
         vision.getVisionBarcodeDetector(options).detectInImage(fvi)
-                .addOnSuccessListener { observable.postValue(it.right()) }
-                .addOnFailureListener { observable.postValue(QSError.fromException(it).left()) }
+                .addOnSuccessListener {
+                    observable.value = it.right()
+                }
+                .addOnFailureListener {
+                    val error = QSError.fromException(it)
+                    observable.value = error.left()
+                }
 
         return observable
     }

@@ -37,19 +37,20 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
                     // The data is only acceptable if the document exists
                     // and its data is not empty
                     if (!it.exists() || it["info"].toString().isBlank()) {
-                        observable.postValue(QSError.DatabaseError.NotFound.left())
+                        val error = QSError.DatabaseError.NotFound
+                        observable.value = error.left()
                     } else {
                         // In order to have a multiline text, every \n is
                         // replaced with a new line
                         val info = it.data?.get("info").toString()
                                 .replace("\\n", "\n")
 
-                        observable.postValue(info.right())
+                        observable.value = info.right()
                     }
                 }
                 .addOnFailureListener {
                     val error = QSError.fromException(it)
-                    observable.postValue(error.left())
+                    observable.value = error.left()
                 }
 
         return observable
@@ -80,11 +81,11 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
 
         batch.commit()
                 .addOnSuccessListener {
-                    observable.postValue(None)
+                    observable.value = None
                 }
                 .addOnFailureListener {
                     val error = QSError.fromException(it)
-                    observable.postValue(error.some())
+                    observable.value = error.some()
                 }
 
         return observable
@@ -97,11 +98,11 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
 
         codeReference.update(mapOf(updatedValues))
                 .addOnSuccessListener {
-                    observable.postValue(None)
+                    observable.value = None
                 }
                 .addOnFailureListener {
                     val error = QSError.fromException(it)
-                    observable.postValue(error.some())
+                    observable.value = error.some()
                 }
 
         return observable
@@ -114,11 +115,11 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
 
         codeReference.delete()
                 .addOnSuccessListener {
-                    observable.postValue(None)
+                    observable.value = None
                 }
                 .addOnFailureListener {
                     val error = QSError.fromException(it)
-                    observable.postValue(error.some())
+                    observable.value = error.some()
                 }
 
         return observable
@@ -128,7 +129,7 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
             LiveData<Option<QSError>> {
         return Transformations.switchMap(retrieveCollection()) {
             it.fold({
-                MutableLiveData<Option<QSError>>().apply { postValue(it.some()) }
+                return@fold MutableLiveData<Option<QSError>>().apply { postValue(it.some()) }
             }, {
                 val batch = firestore.batch()
                 val observable = MutableLiveData<Option<QSError>>()
@@ -139,11 +140,11 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
 
                 batch.commit()
                         .addOnSuccessListener {
-                            observable.postValue(None)
+                            observable.value = None
                         }
                         .addOnFailureListener {
                             val error = QSError.fromException(it)
-                            observable.postValue(error.some())
+                            observable.value = error.some()
                         }
 
                 return@fold observable
