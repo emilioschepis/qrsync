@@ -13,6 +13,7 @@ import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.extension.confirmationDialog
 import com.emilioschepis.qrsync.extension.dialog
 import com.emilioschepis.qrsync.model.QSError
+import com.emilioschepis.qrsync.ui.splash.SplashActivity
 import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -71,6 +72,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             "key_sign_out" -> {
                 confirmationDialog(message = getString(R.string.question_sign_out)) {
                     viewModel.signOut()
+                    startActivity(Intent(activity, SplashActivity::class.java))
                     activity?.finishAffinity()
                 }.show()
             }
