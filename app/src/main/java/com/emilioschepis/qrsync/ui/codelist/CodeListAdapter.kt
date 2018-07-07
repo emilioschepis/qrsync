@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSCode
-import java.text.DateFormat
 
 class CodeListAdapter(private val listener: (String) -> Unit) : ListAdapter<QSCode, CodeListAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -25,16 +24,8 @@ class CodeListAdapter(private val listener: (String) -> Unit) : ListAdapter<QSCo
             val timeTev by lazy { itemView.findViewById<TextView>(R.id.item_code_time) }
             val iconImv by lazy { itemView.findViewById<ImageView>(R.id.item_code_type) }
 
-            val formattedContent = code.content.replace("\n", " ").trim()
+            titleTev.text = if (code.title.isBlank()) code.content else code.title
 
-            // If the code has a title, it is shown before the content
-            titleTev.text = if (code.title.isNotBlank()) {
-                String.format("(%s) %s", code.title.trim(), formattedContent)
-            } else {
-                formattedContent
-            }
-
-            // The time is formatted based on the phone's locale
             timeTev.text = code.formattedDate
 
             Glide.with(itemView)
@@ -43,12 +34,6 @@ class CodeListAdapter(private val listener: (String) -> Unit) : ListAdapter<QSCo
 
             itemView.setOnClickListener { listener.invoke(code.id) }
         }
-
-        private val QSCode.formattedDate: String
-            get() {
-                return DateFormat.getDateTimeInstance()
-                        .format(this.timestamp.toDate())
-            }
 
         private val QSCode.typeIcon: Int
             get() {
