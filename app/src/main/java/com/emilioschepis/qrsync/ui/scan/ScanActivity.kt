@@ -5,11 +5,11 @@ import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceManager
 import android.widget.ToggleButton
 import com.emilioschepis.qrsync.R
+import com.emilioschepis.qrsync.extension.snackbarError
 import com.emilioschepis.qrsync.model.QSError
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.otaliastudios.cameraview.CameraView
@@ -71,7 +71,7 @@ class ScanActivity : AppCompatActivity() {
 
     private fun onImageScanError(error: QSError) {
         processing.compareAndSet(true, false)
-        snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
+        snackbarError(root, error)
     }
 
     private fun onImageScanSuccess(barcodes: List<FirebaseVisionBarcode>) {
@@ -93,22 +93,10 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun onUploadError(error: QSError) {
-        snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
+        snackbarError(root, error)
     }
 
     private fun onUploadSuccess() {
         finish()
-    }
-
-    private fun snackbarMessage(message: String,
-                                duration: Int = Snackbar.LENGTH_INDEFINITE,
-                                callback: (() -> Unit)? = null): Snackbar {
-        val snackbar = Snackbar.make(root, message, duration)
-
-        if (duration == Snackbar.LENGTH_INDEFINITE) {
-            snackbar.setAction(android.R.string.ok) { callback?.invoke() }
-        }
-
-        return snackbar
     }
 }

@@ -4,8 +4,8 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.emilioschepis.qrsync.R
+import com.emilioschepis.qrsync.extension.toastMessage
 import com.emilioschepis.qrsync.ui.codelist.CodeListActivity
 import com.emilioschepis.qrsync.ui.signin.SignInActivity
 import com.google.android.gms.common.ConnectionResult
@@ -21,9 +21,7 @@ class SplashActivity : AppCompatActivity() {
 
         if (GoogleApiAvailability.getInstance()
                         .isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
-            Toast.makeText(this@SplashActivity,
-                    R.string.error_play_services_required, Toast.LENGTH_LONG)
-                    .show()
+            toastMessage(getString(R.string.error_play_services_required))
             return
         }
 

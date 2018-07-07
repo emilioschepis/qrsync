@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import com.emilioschepis.qrsync.R
+import com.emilioschepis.qrsync.extension.snackbarError
 import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSError
 import com.emilioschepis.qrsync.ui.detail.DetailActivity
@@ -101,7 +101,7 @@ class CodeListActivity : AppCompatActivity() {
 
     private fun onCollectionRetrievalError(error: QSError) {
         codeListAdapter.submitList(emptyList())
-        snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
+        snackbarError(root, error)
     }
 
     private fun onCollectionRetrievalSuccess(collection: List<QSCode>?) {
@@ -111,17 +111,5 @@ class CodeListActivity : AppCompatActivity() {
     private fun onListItemClicked(id: String) {
         startActivity(Intent(this, DetailActivity::class.java)
                 .apply { putExtra("code_id", id) })
-    }
-
-    private fun snackbarMessage(message: String,
-                                duration: Int = Snackbar.LENGTH_INDEFINITE,
-                                callback: (() -> Unit)? = null): Snackbar {
-        val snackbar = Snackbar.make(root, message, duration)
-
-        if (duration == Snackbar.LENGTH_INDEFINITE) {
-            snackbar.setAction(android.R.string.ok) { callback?.invoke() }
-        }
-
-        return snackbar
     }
 }

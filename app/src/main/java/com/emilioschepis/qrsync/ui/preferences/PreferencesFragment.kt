@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.extension.confirmationDialog
 import com.emilioschepis.qrsync.extension.dialog
+import com.emilioschepis.qrsync.extension.toastError
 import com.emilioschepis.qrsync.model.QSError
 import com.emilioschepis.qrsync.ui.splash.SplashActivity
 import com.google.firebase.iid.FirebaseInstanceId
@@ -49,7 +50,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         FirebaseInstanceId.getInstance().deleteInstanceId()
                     } catch (ex: IOException) {
                         uiThread {
-                            showMessage(getString(R.string.error_generic_unknown_reason, ex.message))
+                            toastError(QSError.Unknown(ex.message))
                         }
                     }
                 }
@@ -106,12 +107,12 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         try {
             startActivity(i)
         } catch (ex: ActivityNotFoundException) {
-            showMessage(getString(R.string.error_activity_not_found), Toast.LENGTH_SHORT)
+            Toast.makeText(this.activity, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun onCodesDeletionError(error: QSError) {
-        showMessage(getString(error.resId, error.params.getOrNull(0)))
+        toastError(error)
     }
 
     private fun onCodesDeletionSuccess() {
@@ -119,16 +120,12 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private fun onInfoRetrievalError(error: QSError) {
-        showMessage(getString(error.resId, error.params.getOrNull(0)))
+        toastError(error)
     }
 
     private fun onInfoRetrievalSuccess(info: String) {
         val title = getString(R.string.dialog_title_info)
 
         dialog(title, info).show()
-    }
-
-    private fun showMessage(message: String, duration: Int = Toast.LENGTH_LONG) {
-        Toast.makeText(activity, message, duration).show()
     }
 }

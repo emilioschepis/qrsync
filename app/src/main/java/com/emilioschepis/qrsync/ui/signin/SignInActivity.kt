@@ -5,13 +5,13 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import com.emilioschepis.qrsync.R
+import com.emilioschepis.qrsync.extension.snackbarError
 import com.emilioschepis.qrsync.model.QSError
 import com.emilioschepis.qrsync.ui.codelist.CodeListActivity
 import com.emilioschepis.qrsync.ui.signup.SignUpActivity
@@ -92,7 +92,7 @@ class SignInActivity : AppCompatActivity() {
                             it?.fold(this::onAuthenticationError) { onAuthenticationSuccess() }
                         })
                     } catch (ex: ApiException) {
-                        snackbarMessage(getString(R.string.error_generic_unknown_reason, ex.message)).show()
+                        snackbarError(root, QSError.Unknown(ex.message))
                     }
                 }
             }
@@ -122,27 +122,13 @@ class SignInActivity : AppCompatActivity() {
             is QSError.AuthenticationError -> {
                 error.associatedView?.error = getString(error.resId)
             }
-            else -> {
-                snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
-            }
+            else -> snackbarError(root, error)
         }
     }
 
     private fun onAuthenticationSuccess() {
         startActivity(Intent(this, CodeListActivity::class.java))
         finish()
-    }
-
-    private fun snackbarMessage(message: String,
-                                duration: Int = Snackbar.LENGTH_INDEFINITE,
-                                callback: (() -> Unit)? = null): Snackbar {
-        val snackbar = Snackbar.make(root, message, duration)
-
-        if (duration == Snackbar.LENGTH_INDEFINITE) {
-            snackbar.setAction(android.R.string.ok) { callback?.invoke() }
-        }
-
-        return snackbar
     }
 
     private val googleSignInIntent: Intent

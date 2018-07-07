@@ -7,7 +7,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -17,9 +16,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.emilioschepis.qrsync.R
-import com.emilioschepis.qrsync.extension.confirmationDialog
-import com.emilioschepis.qrsync.extension.dialog
-import com.emilioschepis.qrsync.extension.editableDialog
+import com.emilioschepis.qrsync.extension.*
 import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSCodeAction
 import com.emilioschepis.qrsync.model.QSError
@@ -108,7 +105,7 @@ class DetailActivity : AppCompatActivity() {
                 }.show()
             }
             is QSCodeAction.EditTitle -> {
-                val title = getString(R.string.dialog_title_title_edit)
+                val title = R.string.dialog_title_title_edit
                 val start = viewModel.currentCode.title
 
                 editableDialog(title, start) {
@@ -121,7 +118,7 @@ class DetailActivity : AppCompatActivity() {
                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("QSCode.Content", viewModel.currentCode.content)
                 clipboard.primaryClip = clip
-                snackbarMessage(getString(R.string.info_copied_content), Snackbar.LENGTH_SHORT).show()
+                snackbarMessage(root, getString(R.string.info_copied_content))
             }
             is QSCodeAction.ReadInfo -> {
                 dialog(message = viewModel.currentCode.infoText)
@@ -130,7 +127,7 @@ class DetailActivity : AppCompatActivity() {
                                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                 val clip = ClipData.newPlainText("QSCode.Id", viewModel.currentCode.id)
                                 clipboard.primaryClip = clip
-                                snackbarMessage(getString(R.string.info_copied_id), Snackbar.LENGTH_SHORT).show()
+                                snackbarMessage(root, getString(R.string.info_copied_id))
                             }
                         }.show()
             }
@@ -138,14 +135,14 @@ class DetailActivity : AppCompatActivity() {
                 try {
                     startActivity(action.intent?.invoke(viewModel.currentCode))
                 } catch (ex: ActivityNotFoundException) {
-                    snackbarMessage(getString(R.string.error_activity_not_found), Snackbar.LENGTH_SHORT).show()
+                    snackbarMessage(root, getString(R.string.error_activity_not_found))
                 }
             }
         }
     }
 
     private fun onCodeDeletionError(error: QSError) {
-        snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
+        snackbarError(root, error)
     }
 
     private fun onCodeDeletionSuccess() {
@@ -153,7 +150,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun onCodeUpdateError(error: QSError) {
-        snackbarMessage(getString(error.resId, error.params.getOrNull(0))).show()
+        snackbarError(root, error)
     }
 
     private fun onCodeUpdateSuccess() {
@@ -164,7 +161,7 @@ class DetailActivity : AppCompatActivity() {
         // Checking for active observers makes sure that no error
         // is showed when dealing with a deleted code
         if (viewModel.code.hasActiveObservers()) {
-            snackbarMessage(getString(error.resId, error.params.getOrNull(0))) { finish() }.show()
+            snackbarError(root, error) { finish() }
         }
     }
 
@@ -179,20 +176,6 @@ class DetailActivity : AppCompatActivity() {
 
     private fun onActionsChanged(actions: List<QSCodeAction>?) {
         actionListAdapter.submitList(actions)
-    }
-
-    private fun snackbarMessage(message: String,
-                                duration: Int = Snackbar.LENGTH_INDEFINITE,
-                                callback: (() -> Unit)? = null): Snackbar {
-        val snackbar = Snackbar.make(root, message, duration)
-
-        if (duration == Snackbar.LENGTH_INDEFINITE) {
-            snackbar.setAction(android.R.string.ok) {
-                callback?.invoke()
-            }
-        }
-
-        return snackbar
     }
 
     private val QSCode.infoText: String
