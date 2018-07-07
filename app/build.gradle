@@ -28,6 +28,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro',
                     'proguard-rules-debug.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro',
+                    'proguard-rules-test.pro'
+                    'proguard-rules-debug.pro'
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
         }
@@ -48,8 +52,8 @@ dependencies {
     implementation libraries.anko
     implementation libraries.glide
     testImplementation testLibraries.jUnit
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation androidTestLibraries.espresso
+    androidTestImplementation androidTestLibraries.supportTest
 }
 
 apply plugin: 'com.google.gms.google-services'
