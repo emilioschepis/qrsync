@@ -7,16 +7,16 @@
     android:layout_height="match_parent"
     tools:context="com.emilioschepis.qrsync.ui.codelist.CodeListActivity">
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+    <ProgressBar
         android:id="@+id/code_list_loading_prb"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:layout_gravity="top"
         android:indeterminate="true"
         android:visibility="gone"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_useIntrinsicPadding="false"
-        tools:visibility="visible" />
+        tools:visibility="visible"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/code_list_main_rev"

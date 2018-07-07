@@ -45,7 +45,6 @@ dependencies {
     implementation libraries.cameraView
     implementation libraries.koin
     implementation libraries.arrow
-    implementation libraries.progressBar
     implementation libraries.anko
     implementation libraries.glide
     testImplementation testLibraries.jUnit

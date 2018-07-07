@@ -6,18 +6,28 @@
     android:layout_height="match_parent"
     tools:context="com.emilioschepis.qrsync.ui.detail.DetailActivity">
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+    <ProgressBar
         android:id="@+id/detail_loading_prb"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_useIntrinsicPadding="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         tools:visibility="visible" />
 
+    <!-- This is needed because ConstraintLayout does not support
+         negative margins. So the ProgressBar uses this Guideline
+         to find its bottom point -->
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="4dp" />
 
     <ScrollView
         android:layout_width="match_parent"
