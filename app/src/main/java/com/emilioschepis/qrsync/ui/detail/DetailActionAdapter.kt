@@ -13,24 +13,26 @@ import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSCodeAction
 
 class DetailActionAdapter(private val listener: (QSCodeAction) -> Unit) : ListAdapter<QSCodeAction, DetailActionAdapter.ViewHolder>(DIFF_CALLBACK) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_action, parent, false))
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), listener)
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(action: QSCodeAction, listener: (QSCodeAction) -> Unit) {
-            val nameTev by lazy { itemView.findViewById<TextView>(R.id.item_action_name) }
-            val iconImv by lazy { itemView.findViewById<ImageView>(R.id.item_action_icon) }
-
-            nameTev.setText(action.name)
-
-            Glide.with(itemView)
-                    .load(action.icon)
-                    .into(iconImv)
-
-            itemView.setOnClickListener { listener.invoke(action) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailActionAdapter.ViewHolder {
+        val layout = LayoutInflater.from(parent.context).inflate(R.layout.item_action, parent, false)
+        return DetailActionAdapter.ViewHolder(layout).apply {
+            itemView.setOnClickListener { listener.invoke(getItem(this.adapterPosition)) }
         }
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(action: QSCodeAction) {
+            val nameTev = itemView.findViewById<TextView>(R.id.item_action_name)
+            val iconImv = itemView.findViewById<ImageView>(R.id.item_action_icon)
+
+            nameTev.setText(action.name)
+            Glide.with(itemView).load(action.icon).into(iconImv)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int = R.layout.item_action
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<QSCodeAction>() {
