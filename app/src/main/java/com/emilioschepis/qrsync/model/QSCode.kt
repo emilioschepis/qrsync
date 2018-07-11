@@ -1,8 +1,6 @@
 package com.emilioschepis.qrsync.model
 
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.Exclude
-import java.text.DateFormat
 import java.util.*
 
 data class QSCode(val id: String = UUID.randomUUID().toString(),
@@ -12,10 +10,6 @@ data class QSCode(val id: String = UUID.randomUUID().toString(),
                   val extra: String = "",
                   val type: CodeType = CodeType.UNKNOWN,
                   val timestamp: Timestamp = Timestamp.now()) {
-
-    @get:Exclude
-    val formattedDate = DateFormat.getDateTimeInstance()
-            .format(timestamp.toDate()) ?: ""
 
     enum class CodeType {
         UNKNOWN,

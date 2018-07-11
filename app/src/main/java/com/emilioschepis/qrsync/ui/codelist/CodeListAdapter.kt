@@ -11,6 +11,9 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.model.QSCode
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.text.DateFormat
 
 class CodeListAdapter(private val listener: (String) -> Unit) : ListAdapter<QSCode, CodeListAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -24,15 +27,20 @@ class CodeListAdapter(private val listener: (String) -> Unit) : ListAdapter<QSCo
             val timeTev by lazy { itemView.findViewById<TextView>(R.id.item_code_time) }
             val iconImv by lazy { itemView.findViewById<ImageView>(R.id.item_code_type) }
 
-            titleTev.text = if (code.title.isBlank()) code.content else code.title
+            doAsync {
+                val content = if (code.title.isBlank()) code.content else code.title
+                val formattedDate = code.formattedDate
+                val typeIcon = code.typeIcon
 
-            timeTev.text = code.formattedDate
-
-            Glide.with(itemView)
-                    .load(code.typeIcon)
-                    .into(iconImv)
-
-            itemView.setOnClickListener { listener.invoke(code.id) }
+                uiThread {
+                    titleTev.text = content
+                    timeTev.text = formattedDate
+                    Glide.with(itemView)
+                            .load(typeIcon)
+                            .into(iconImv)
+                    itemView.setOnClickListener { listener.invoke(code.id) }
+                }
+            }
         }
 
         private val QSCode.typeIcon: Int
@@ -50,6 +58,12 @@ class CodeListAdapter(private val listener: (String) -> Unit) : ListAdapter<QSCo
                     QSCode.CodeType.ISBN -> R.drawable.ic_book_black_24dp
                 }
             }
+
+        private val QSCode.formattedDate: String
+            get() = DateFormat
+                    .getDateTimeInstance()
+                    .format(timestamp.toDate()) ?: ""
+
     }
 
     companion object {
