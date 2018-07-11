@@ -42,6 +42,12 @@ class DetailActivity : AppCompatActivity() {
         actionsRev.run {
             // Initialize layoutManager and decorations
             val layoutManager = LinearLayoutManager(this@DetailActivity)
+
+            // We don't need to calculate how many actions fit on screen,
+            // as they will always be a set amount.
+            layoutManager.isItemPrefetchEnabled = true
+            layoutManager.initialPrefetchItemCount = 5
+
             val decoration = DividerItemDecoration(this@DetailActivity, layoutManager.orientation)
             val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 

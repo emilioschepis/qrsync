@@ -21,6 +21,8 @@ import com.emilioschepis.qrsync.ui.detail.DetailActivity
 import com.emilioschepis.qrsync.ui.preferences.PreferencesActivity
 import com.emilioschepis.qrsync.ui.scan.ScanActivity
 import org.koin.android.viewmodel.ext.android.viewModel
+import kotlin.math.roundToInt
+
 
 class CodeListActivity : AppCompatActivity() {
 
@@ -36,7 +38,6 @@ class CodeListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_code_list)
 
-
         scanFab.run {
             setOnClickListener {
                 val intent = Intent(this@CodeListActivity, ScanActivity::class.java)
@@ -47,6 +48,16 @@ class CodeListActivity : AppCompatActivity() {
         codesRev.run {
             // Initialize layoutManager and decorations
             val layoutManager = LinearLayoutManager(this@CodeListActivity)
+
+            // Find how many items fit on the screen at once
+            val displayMetrics = context.resources.displayMetrics
+            val dpHeight = displayMetrics.heightPixels / displayMetrics.density
+            // Approximately the height of a code item
+            val itemHeight = 8 + 51 + 8 + 51 + 8
+
+            layoutManager.isItemPrefetchEnabled = true
+            layoutManager.initialPrefetchItemCount = (dpHeight / itemHeight).roundToInt()
+
             val decoration = DividerItemDecoration(this@CodeListActivity, layoutManager.orientation)
             val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 
