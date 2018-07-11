@@ -74,7 +74,7 @@ class QSFirebaseMessagingService : FirebaseMessagingService() {
                 .setContentText(body)
                 .setSound(defaultSoundUri)
                 .setAutoCancel(true)
-                .setLights(getColor(R.color.colorPrimary), 200, 200)
+                .setColor(getColor(R.color.colorPrimary))
                 .setContentIntent(pending)
 
         notificationManager.notify(notificationRequestCode, builder.build())
