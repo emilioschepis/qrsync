@@ -11,9 +11,9 @@ import android.support.v7.preference.PreferenceFragmentCompat
 import android.widget.Toast
 import com.emilioschepis.qrsync.R
 import com.emilioschepis.qrsync.extension.confirmationDialog
-import com.emilioschepis.qrsync.extension.dialog
 import com.emilioschepis.qrsync.extension.toastError
 import com.emilioschepis.qrsync.model.QSError
+import com.emilioschepis.qrsync.ui.about.AboutActivity
 import com.emilioschepis.qrsync.ui.splash.SplashActivity
 import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.doAsync
@@ -85,9 +85,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 }.show()
             }
             "key_info" -> {
-                viewModel.retrieveInfo().observe(this, Observer {
-                    it?.fold(this::onInfoRetrievalError, this::onInfoRetrievalSuccess)
-                })
+                startActivity(Intent(activity, AboutActivity::class.java))
             }
             "key_feedback" -> {
                 openFeedbackEmail()
@@ -117,15 +115,5 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     private fun onCodesDeletionSuccess() {
         activity?.finish()
-    }
-
-    private fun onInfoRetrievalError(error: QSError) {
-        toastError(error)
-    }
-
-    private fun onInfoRetrievalSuccess(info: String) {
-        val title = getString(R.string.dialog_title_info)
-
-        dialog(title, info).show()
     }
 }

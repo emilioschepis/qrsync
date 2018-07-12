@@ -3,7 +3,10 @@ package com.emilioschepis.qrsync.repository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
-import arrow.core.*
+import arrow.core.Either
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.some
 import com.emilioschepis.qrsync.model.QSCode
 import com.emilioschepis.qrsync.model.QSCodeListLiveData
 import com.emilioschepis.qrsync.model.QSCodeLiveData
@@ -24,37 +27,6 @@ class FirestoreRepositoryImpl(private val firestore: FirebaseFirestore,
             requireNotNull(currentUser)
             return firestore.collection("users/${currentUser!!.uid}/codes")
         }
-
-    override fun retrieveInfo():
-            LiveData<Either<QSError, String>> {
-        val documentReference = firestore
-                .collection("public")
-                .document("app_info_panel")
-        val observable = MutableLiveData<Either<QSError, String>>()
-
-        documentReference.get()
-                .addOnSuccessListener {
-                    // The data is only acceptable if the document exists
-                    // and its data is not empty
-                    if (!it.exists() || it["info"].toString().isBlank()) {
-                        val error = QSError.DatabaseError.NotFound
-                        observable.value = error.left()
-                    } else {
-                        // In order to have a multiline text, every \n is
-                        // replaced with a new line
-                        val info = it.data?.get("info").toString()
-                                .replace("\\n", "\n")
-
-                        observable.value = info.right()
-                    }
-                }
-                .addOnFailureListener {
-                    val error = QSError.fromException(it)
-                    observable.value = error.left()
-                }
-
-        return observable
-    }
 
     override fun retrieveCollection():
             LiveData<Either<QSError, List<QSCode>>> {

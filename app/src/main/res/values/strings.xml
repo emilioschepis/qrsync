@@ -86,4 +86,10 @@
     <string name="info_enabling_fcm">Enabling push notifications will generate a unique ID which will be used to reach this device.\n\nThe unique ID can\'t be used to personally identify you and will not be saved by QR Sync.\n\nDo you want to enable push notifications?</string>
     <string name="error_play_services_required">Google Play Service is required to use this application</string>
     <string name="dialog_title_info">Info</string>
+    <string name="handle_instagram" translatable="false">Instagram</string>
+    <string name="handle_twitter" translatable="false">Twitter</string>
+    <string name="handle_github" translatable="false">GitHub</string>
+    <string name="handle_linkedin" translatable="false">LinkedIn</string>
+    <string name="activity_title_about">About</string>
+    <string name="handle_playstore" translatable="false">Play Store</string>
 </resources>

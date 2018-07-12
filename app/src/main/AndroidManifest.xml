@@ -62,6 +62,7 @@
         <activity android:name=".ui.scan.ScanActivity" />
         <activity android:name=".ui.detail.DetailActivity" />
         <activity android:name=".ui.preferences.PreferencesActivity" />
+        <activity android:name=".ui.about.AboutActivity"></activity>
     </application>
 
 </manifest>

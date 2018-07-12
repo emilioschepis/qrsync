@@ -13,9 +13,6 @@ interface IFirestoreRepository {
     fun retrieveCode(id: String):
             LiveData<Either<QSError, QSCode>>
 
-    fun retrieveInfo():
-            LiveData<Either<QSError, String>>
-
     fun uploadCodes(codes: List<QSCode>):
             LiveData<Option<QSError>>
 

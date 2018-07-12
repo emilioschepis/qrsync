@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>instagram_handle</key>
+        <value>emiliocodes</value>
+    </entry>
+    <entry>
+        <key>twitter_handle</key>
+        <value>emilioschepis</value>
+    </entry>
+    <entry>
+        <key>github_handle</key>
+        <value>emilioschepis</value>
+    </entry>
+    <entry>
+        <key>linkedin_handle</key>
+        <value>emilioschepis</value>
+    </entry>
+    <entry>
+        <key>playstore_handle</key>
+        <value>7264367203357103591</value>
+    </entry>
+    <entry>
+        <key>general_info</key>
+        <value>QR Sync was made by me, Emilio Schepis.\n\nIt is completely free and open source. You
+            can find the source code in the GitHub link below.\n\nThe first iteration of the app was
+            created in November of 2016, and I wanted to make it free for everyone.
+        </value>
+    </entry>
+</defaultsMap>
