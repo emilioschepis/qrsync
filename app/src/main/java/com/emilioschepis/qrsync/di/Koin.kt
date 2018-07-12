@@ -23,7 +23,11 @@ import org.koin.dsl.module.module
 private val firebaseModule = module {
     single { FirebaseAuth.getInstance() as FirebaseAuth }
     single { configuredFirestore }
-    single { configuredRemoteConfig }
+
+    // The remote config is created on start so that
+    // the application fetches the latest values and can
+    // display them immediately
+    single(createOnStart = true) { configuredRemoteConfig }
     single { FirebaseVision.getInstance() as FirebaseVision }
 }
 
