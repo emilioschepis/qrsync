@@ -34,4 +34,9 @@ class ConfigRepositoryImpl(private val config: FirebaseRemoteConfig) : IConfigRe
             return config.getString("general_info")
                     .replace("\\n", "\n")
         }
+    override val websiteUrl: Uri
+        get() {
+            val remoteString = config.getString("website_url")
+            return Uri.parse(remoteString)
+        }
 }

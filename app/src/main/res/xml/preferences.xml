@@ -23,6 +23,11 @@
             android:summaryOn="@string/preference_summary_fcm_permission_on"
             android:title="@string/preference_title_fcm_permission" />
         <Preference
+            android:key="key_website"
+            android:summary="@string/preference_summary_website"
+            android:title="@string/preference_title_website" />
+
+        <Preference
             android:key="key_info"
             android:summary="@string/preference_summary_info"
             android:title="@string/preference_title_info" />

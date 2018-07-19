@@ -84,6 +84,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     })
                 }.show()
             }
+            "key_website" -> {
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW).apply { data = viewModel.websiteUrl })
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(this.activity, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show()
+                }
+            }
             "key_info" -> {
                 startActivity(Intent(activity, AboutActivity::class.java))
             }

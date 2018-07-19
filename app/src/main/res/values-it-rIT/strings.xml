@@ -72,5 +72,7 @@
     <string name="error_play_services_required">Per utilizzare questa applicazione è necessario Google Play Services</string>
     <string name="dialog_title_info">Informazioni</string>
     <string name="activity_title_about">Informazioni</string>
+    <string name="preference_title_website">Sito web</string>
+    <string name="preference_summary_website">Visita la versione web di QR Sync sul tuo computer</string>
 
 </resources>

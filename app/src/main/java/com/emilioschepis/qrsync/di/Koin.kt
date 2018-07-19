@@ -45,7 +45,7 @@ private val viewModelModule = module {
     viewModel { (id: String) -> DetailViewModel(id, get()) }
     viewModel { ScanViewModel(get(), get()) }
     viewModel { CodeListViewModel(get()) }
-    viewModel { PreferencesViewModel(get(), get()) }
+    viewModel { PreferencesViewModel(get(), get(), get()) }
     viewModel { AboutViewModel(get()) }
 }
 

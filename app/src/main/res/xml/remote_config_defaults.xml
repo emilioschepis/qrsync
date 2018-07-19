@@ -24,4 +24,8 @@
         <key>general_info</key>
         <value>Missing description, please reload.</value>
     </entry>
+    <entry>
+        <key>website_url</key>
+        <value>https://qrsync.cloud</value>
+    </entry>
 </defaultsMap>

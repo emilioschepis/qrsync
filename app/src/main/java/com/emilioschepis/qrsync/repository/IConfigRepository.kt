@@ -9,4 +9,5 @@ interface IConfigRepository {
     val linkedInHandle: Uri
     val playStoreHandle: Uri
     val generalInfo: String
+    val websiteUrl: Uri
 }

@@ -92,4 +92,6 @@
     <string name="handle_linkedin" translatable="false">LinkedIn</string>
     <string name="activity_title_about">About</string>
     <string name="handle_playstore" translatable="false">Play Store</string>
+    <string name="preference_title_website">Website</string>
+    <string name="preference_summary_website">Visit the web version of QR Sync on your computer</string>
 </resources>
