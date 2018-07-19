@@ -6,6 +6,8 @@ I originally published the first version in November of 2016 as QReader (com.esa
 
 In an effort to improve my coding skills I'm open sourcing the code that I started rewriting from scratch on June 16, 2018.
 
+<a href='https://play.google.com/store/apps/details?id=com.emilioschepis.qrsync&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png' width="240" height="93"/></a>
+
 ## About the application
 QR Sync makes it easy to save QR codes you scan harnessing the power of cloud databases.
 
