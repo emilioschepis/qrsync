@@ -50,7 +50,13 @@ sealed class QSCodeAction(val priority: Int, @StringRes val name: Int, @Drawable
 
     object OpenUrl : QSCodeAction(4, R.string.action_open_url, R.drawable.ic_link_black_24dp, {
         require(it.type == QSCode.CodeType.URL)
-        Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(it.content) }
+        val url = if (it.content.startsWith("https://") ||
+                it.content.startsWith("http://")) {
+            it.content
+        } else {
+            "https://${it.content}"
+        }
+        Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(url) }
     })
 
     object AddContact : QSCodeAction(4, R.string.action_add_contact, R.drawable.ic_person_add_black_24dp, {
