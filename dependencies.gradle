@@ -4,7 +4,7 @@ ext {
             androidCompileSdkVersion: 27,
             androidTargetSdkVersion : 27,
             junitVersion            : '4.12',
-            kotlinVersion           : '1.2.51',
+            kotlinVersion           : '1.2.60',
             supportLibraryVersion   : '27.1.1',
             constraintLibraryVersion: '1.1.2',
             lifecycleVersion        : '1.1.1',
@@ -22,7 +22,7 @@ ext {
             firebaseVersion         : [
                     core          : '16.0.1',
                     authentication: '16.0.2',
-                    firestore     : '17.0.2',
+                    firestore     : '17.0.4',
                     vision        : '16.0.0',
                     messaging     : '17.1.0',
                     config : '16.0.0'
