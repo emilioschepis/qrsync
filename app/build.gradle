@@ -31,7 +31,7 @@ android {
             testProguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro',
                     'proguard-rules-test.pro'
-                    'proguard-rules-debug.pro'
+            'proguard-rules-debug.pro'
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
         }
@@ -51,6 +51,8 @@ dependencies {
     implementation libraries.arrow
     implementation libraries.anko
     implementation libraries.glide
+    implementation libraries.clansFab
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation testLibraries.jUnit
     androidTestImplementation androidTestLibraries.espresso
     androidTestImplementation androidTestLibraries.supportTest

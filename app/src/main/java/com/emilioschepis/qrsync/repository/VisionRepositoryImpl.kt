@@ -2,6 +2,7 @@ package com.emilioschepis.qrsync.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.graphics.Bitmap
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
@@ -22,6 +23,22 @@ class VisionRepositoryImpl(private val vision: FirebaseVision) : IVisionReposito
                 .build()
 
         val fvi = FirebaseVisionImage.fromByteArray(bytes, metadata)
+        val observable = MutableLiveData<Either<QSError, List<FirebaseVisionBarcode>>>()
+
+        vision.getVisionBarcodeDetector(options).detectInImage(fvi)
+                .addOnSuccessListener {
+                    observable.value = it.right()
+                }
+                .addOnFailureListener {
+                    val error = QSError.fromException(it)
+                    observable.value = error.left()
+                }
+
+        return observable
+    }
+
+    override fun scanImage(bitmap: Bitmap): LiveData<Either<QSError, List<FirebaseVisionBarcode>>> {
+        val fvi = FirebaseVisionImage.fromBitmap(bitmap)
         val observable = MutableLiveData<Either<QSError, List<FirebaseVisionBarcode>>>()
 
         vision.getVisionBarcodeDetector(options).detectInImage(fvi)

@@ -79,6 +79,11 @@ fun Activity.toastMessage(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
+fun Activity.toastError(error: QSError) {
+    val message = getString(error.resId, error.params.firstOrNull())
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
 fun Fragment.toastError(error: QSError) {
     val message = getString(error.resId, error.params.firstOrNull())
     Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()

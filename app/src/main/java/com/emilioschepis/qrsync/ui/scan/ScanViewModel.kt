@@ -3,6 +3,7 @@ package com.emilioschepis.qrsync.ui.scan
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
+import android.graphics.Bitmap
 import arrow.core.Either
 import arrow.core.Option
 import com.emilioschepis.qrsync.model.QSCode
@@ -20,6 +21,10 @@ class ScanViewModel(private val vision: IVisionRepository,
 
     fun scanImage(bytes: ByteArray, width: Int, height: Int): LiveData<Either<QSError, List<FirebaseVisionBarcode>>> {
         return Transformations.map(vision.scanImage(bytes, width, height)) { it }
+    }
+
+    fun scanImage(bitmap: Bitmap): LiveData<Either<QSError, List<FirebaseVisionBarcode>>> {
+        return Transformations.map(vision.scanImage(bitmap)) {it}
     }
 
     fun uploadCodes(barcodes: List<FirebaseVisionBarcode>): LiveData<Option<QSError>> {

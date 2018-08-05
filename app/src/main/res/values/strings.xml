@@ -94,4 +94,8 @@
     <string name="handle_playstore" translatable="false">Play Store</string>
     <string name="preference_title_website">Website</string>
     <string name="preference_summary_website">Visit the web version of QR Sync on your computer</string>
+    <string name="prompt_select_image">Select an image</string>
+    <string name="info_no_codes">No codes were found in the image</string>
+    <string name="label_camera">Camera</string>
+    <string name="label_gallery">Gallery</string>
 </resources>

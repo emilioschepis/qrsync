@@ -74,5 +74,9 @@
     <string name="activity_title_about">Informazioni</string>
     <string name="preference_title_website">Sito web</string>
     <string name="preference_summary_website">Visita la versione web di QR Sync sul tuo computer</string>
+    <string name="prompt_select_image">Seleziona una immagine</string>
+    <string name="info_no_codes">Nessun codice trovato nell\'immagine</string>
+    <string name="label_camera">Camera</string>
+    <string name="label_gallery">Galleria</string>
 
 </resources>
